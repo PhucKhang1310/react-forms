@@ -5,21 +5,31 @@ import Popup from "./Popup";
 import Table from "./Table";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 
+type PopupType = "delete" | "status" | null;
+
 const Management = () => {
-  const [statusPopupVisible, setStatusPopupVisible] = useState(false);
-  const [deletePopupVisible, setDeletePopupVisible] = useState(false);
+  const [popupVisible, setPopupVisible] = useState(false);
+  const [popupType, setPopupType] = useState<PopupType>(null);
   const [pendingItem, setPendingItem] = useState<any>(null);
   const TableData = useAppSelector((state) => state.account.accounts);
   const dispatch = useAppDispatch();
 
-  const onConfirm = () => {
-    updateStatus();
-    setStatusPopupVisible(false);
+  const openPopup = (type: PopupType, item: any) => {
+    setPopupType(type);
+    setPendingItem(item);
+    setPopupVisible(true);
   };
 
-  const onCancel = () => {
+  const closePopup = () => {
+    setPopupVisible(false);
     setPendingItem(null);
-    setStatusPopupVisible(false);
+    setPopupType(null);
+  };
+
+  const onConfirm = () => {
+    if (popupType === "delete") deleteAccount();
+    else if (popupType === "status") updateStatus();
+    closePopup();
   };
 
   const updateStatus = () => {
@@ -29,11 +39,6 @@ const Management = () => {
     });
   };
 
-  const onToggle = (item: any) => {
-    setStatusPopupVisible(true);
-    setPendingItem(item);
-  };
-
   const deleteAccount = () => {
     dispatch({
       type: "account/deleteAccount",
@@ -41,42 +46,18 @@ const Management = () => {
     });
   };
 
-  const onDelete = (item: any) => {
-    setPendingItem(item);
-    setDeletePopupVisible(true);
-  };
-
-  const onDeleteConfirm = () => {
-    deleteAccount();
-    setDeletePopupVisible(false);
-  };
-
-  const onDeleteCancel = () => {
-    setPendingItem(null);
-    setDeletePopupVisible(false);
-  };
-
   const deleteMessage = `Are you sure you want to delete ${pendingItem?.name}?`;
   const statusMessage = `Are you sure you want to change the status of ${pendingItem?.name}?`;
 
   return (
     <div>
-      {deletePopupVisible && (
+      {popupVisible && (
         <Popup
-          confirmText="Delete"
-          cancelText="Cancel"
-          onConfirm={onDeleteConfirm}
-          onCancel={onDeleteCancel}
-          message={deleteMessage}
-        />
-      )}
-      {statusPopupVisible && (
-        <Popup
-          message={statusMessage}
-          confirmText="Update"
+          message={popupType === "status" ? statusMessage : deleteMessage}
+          confirmText={popupType === "status" ? "Update" : "Delete"}
           cancelText="Cancel"
           onConfirm={onConfirm}
-          onCancel={onCancel}
+          onCancel={closePopup}
         />
       )}
       <NavBar />
@@ -89,7 +70,11 @@ const Management = () => {
               Add
             </button>
           </div>
-          <Table items={TableData} onToggle={onToggle} onDelete={onDelete} />
+          <Table
+            items={TableData}
+            onToggle={(item) => openPopup("status", item)}
+            onDelete={(item) => openPopup("delete", item)}
+          />
         </div>
       </div>
     </div>

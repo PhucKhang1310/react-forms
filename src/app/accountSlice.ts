@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { act } from "react";
 
 export interface AccountOptions {
   id: string;
@@ -34,27 +35,43 @@ const Accounts: AccountOptions[] = [
 
 export interface AccountState {
   accounts: AccountOptions[];
+  isLoggedIn?: boolean;
 }
 
 const initialState: AccountState = {
   accounts: Accounts,
+  isLoggedIn: false,
 };
 
 const AccountSlice = createSlice({
-    name: "account",
-    initialState,
-    reducers: {
-      toggleAccountStatus: (state, action) => {
-        const account = state.accounts.find(acc => acc.id === action.payload.id);
-        if (account) {
-          account.status = !account.status;
-        }
-      },
-      deleteAccount: (state, action) => {
-        state.accounts = state.accounts.filter(acc => acc.id !== action.payload.id);
-      },
-    }
-})
+  name: "account",
+  initialState,
+  reducers: {
+    toggleAccountStatus: (state, action) => {
+      const account = state.accounts.find(
+        (acc) => acc.id === action.payload.id
+      );
+      if (account) {
+        account.status = !account.status;
+      }
+    },
+    deleteAccount: (state, action) => {
+      state.accounts = state.accounts.filter(
+        (acc) => acc.id !== action.payload.id
+      );
+    },
+    login: (state, action) => {
+      const { username, email } = action.payload;
+      const user = state.accounts.find(
+        (acc) => acc.name === username && acc.email === email
+      );
+      if (user) {
+        state.isLoggedIn = true;
+      }
+    },
+  },
+});
 
-export const { toggleAccountStatus, deleteAccount } = AccountSlice.actions;
+export const { toggleAccountStatus, deleteAccount, login } =
+  AccountSlice.actions;
 export default AccountSlice.reducer;
