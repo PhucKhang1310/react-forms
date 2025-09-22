@@ -1,6 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { act } from "react";
-
 export interface AccountOptions {
   id: string;
   name: string;
