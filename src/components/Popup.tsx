@@ -1,4 +1,4 @@
-interface PopupProps{
+interface PopupProps {
   message?: string;
   confirmText?: string;
   cancelText?: string;
@@ -6,17 +6,32 @@ interface PopupProps{
   onCancel?: () => void;
 }
 
-const Popup = ({ onConfirm, onCancel, message = "Do you really want to do this?", confirmText= "Yes", cancelText= "No" }: PopupProps) => {
-
+const Popup = ({
+  onConfirm,
+  onCancel,
+  message = "Do you really want to do this?",
+  confirmText = "Yes",
+  cancelText = "No",
+}: PopupProps) => {
   return (
-    <div className="w-screen h-screen flex justify-center items-center bg-[rgba(0,0,0,0.5)] z-10 absolute top-0 left-0">
-      <div className="flex flex-col w-xl h-52 rounded-md bg-white justify-center">
-        <div className="flex justify-center items-center p-10">
+    <div className="absolute top-0 left-0 z-10 flex h-screen w-screen items-center justify-center bg-[rgba(0,0,0,0.5)]">
+      <div className="flex h-52 w-xl flex-col justify-center rounded-md bg-white">
+        <div className="flex items-center justify-center p-10">
           <h3>{message}</h3>
         </div>
         <div className="flex justify-center gap-20">
-          <button className="border border-gray-200 w-1/4 rounded-sm hover:cursor-pointer" onClick={onCancel}>{cancelText}</button>
-          <button className="main-color w-1/4 rounded-sm hover:cursor-pointer" onClick={onConfirm}>{confirmText}</button>
+          <button
+            className="w-1/4 rounded-sm border border-gray-200 hover:cursor-pointer"
+            onClick={onCancel}
+          >
+            {cancelText}
+          </button>
+          <button
+            className="main-color w-1/4 rounded-sm hover:cursor-pointer"
+            onClick={onConfirm}
+          >
+            {confirmText}
+          </button>
         </div>
       </div>
     </div>

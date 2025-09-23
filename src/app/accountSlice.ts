@@ -47,7 +47,7 @@ const AccountSlice = createSlice({
   reducers: {
     toggleAccountStatus: (state, action) => {
       const account = state.accounts.find(
-        (acc) => acc.id === action.payload.id
+        (acc) => acc.id === action.payload.id,
       );
       if (account) {
         account.status = !account.status;
@@ -55,13 +55,13 @@ const AccountSlice = createSlice({
     },
     deleteAccount: (state, action) => {
       state.accounts = state.accounts.filter(
-        (acc) => acc.id !== action.payload.id
+        (acc) => acc.id !== action.payload.id,
       );
     },
     login: (state, action) => {
       const { username, email } = action.payload;
       const user = state.accounts.find(
-        (acc) => acc.name === username && acc.email === email
+        (acc) => acc.name === username && acc.email === email,
       );
       if (user) {
         state.isLoggedIn = true;

@@ -50,10 +50,10 @@ const Table = ({ onDelete, onToggle, items }: TableProps) => {
                 {item.status ? "Kích hoạt" : "Chưa kích hoạt"}
               </td>
               <td className={`${tableBorder} pl-3.5`}>
-                <div className="flex gap-3 justify-center items-center">
-                  <button className="edit-icon aspect-square h-5 bg-no-repeat bg-center" />
+                <div className="flex items-center justify-center gap-3">
+                  <button className="edit-icon aspect-square h-5 bg-center bg-no-repeat" />
                   <button
-                    className="delete-icon aspect-square h-5 bg-no-repeat bg-center"
+                    className="delete-icon aspect-square h-5 bg-center bg-no-repeat"
                     onClick={() => onDelete?.(item)}
                   />
                 </div>

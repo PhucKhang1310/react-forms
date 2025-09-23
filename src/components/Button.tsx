@@ -8,7 +8,11 @@ interface ButtonProps {
 const Button = ({ label, variant, textAlign }: ButtonProps) => {
   return (
     <div>
-      <button className={`${styles.button} ${textAlign ? styles[textAlign] : ""} ${styles[variant]}`}>{label}</button>
+      <button
+        className={`${styles.button} ${textAlign ? styles[textAlign] : ""} ${styles[variant]}`}
+      >
+        {label}
+      </button>
     </div>
   );
 };

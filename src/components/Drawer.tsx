@@ -1,11 +1,11 @@
 const Drawer = () => {
   return (
-    <div className="w-1/5 h-screen bg-[#3F4E4F]">
-      <div className="px-5 py-5 flex flex-col gap-5 h-1/5">
-        <button className="w-full rounded-sm h-1/4 text-left font-bold text-sm font-sans border-none outline-none box-border pl-5 bg-[#DCD7C9] text-[#212727]">
+    <div className="h-screen w-1/5 bg-[#3F4E4F]">
+      <div className="flex h-1/5 flex-col gap-5 px-5 py-5">
+        <button className="box-border h-1/4 w-full rounded-sm border-none bg-[#DCD7C9] pl-5 text-left font-sans text-sm font-bold text-[#212727] outline-none">
           Danh sách người dùng
         </button>
-        <button className="w-full rounded-sm h-1/4 text-left font-bold text-sm font-sans border-none outline-none box-border pl-5 bg-none text-[#DCD7C9]">
+        <button className="box-border h-1/4 w-full rounded-sm border-none bg-none pl-5 text-left font-sans text-sm font-bold text-[#DCD7C9] outline-none">
           Danh sách sản phẩm
         </button>
       </div>

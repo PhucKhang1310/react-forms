@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useAppDispatch } from "../app/hooks";
-import styles from "../styles/login.module.css";
 import LoginInput from "./LoginInput";
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -10,8 +9,8 @@ const Login = () => {
     dispatch({ type: "account/login", payload: { username, email } });
   };
   return (
-    <div className={styles.loginContainer}>
-      <div className={`${styles.login}`}>
+    <div className="flex h-screen items-center justify-center">
+      <div className="flex flex-col items-center gap-5 rounded-sm border border-[#DCD7C9] bg-white p-10 shadow-md">
         <h2>Đăng nhập</h2>
         <form action="">
           <LoginInput

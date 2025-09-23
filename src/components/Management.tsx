@@ -63,10 +63,10 @@ const Management = () => {
       <NavBar />
       <div className="flex">
         <Drawer />
-        <div className="flex flex-col p-5 w-full">
+        <div className="flex w-full flex-col p-5">
           <div className="flex justify-between pb-3">
             <h2 className="text-lg font-bold">Danh sách</h2>
-            <button className="bg-[#dcd7c9] w-25 h-10 text-lg font-bold">
+            <button className="h-10 w-25 bg-[#dcd7c9] text-lg font-bold">
               Add
             </button>
           </div>
