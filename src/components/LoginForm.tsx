@@ -1,36 +1,43 @@
-import { useState, type FormEvent } from "react";
-import LoginButton from "./LoginButton";
-import LoginInput from "./LoginInput";
+import FormButton from "./FormButton";
 import { useAppDispatch } from "../app/hooks";
+import { useForm } from "react-hook-form";
+import { type FormData, UserSchema } from "../app/types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import FormInput from "./FormInput";
 
 const LoginForm = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({ resolver: zodResolver(UserSchema as any) });
   const dispatch = useAppDispatch();
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    dispatch({ type: "account/login", payload: { username, email } });
+  const onSubmit = (data: FormData) => {
+    dispatch({ type: "account/login", payload: data });
   };
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       className="flex w-full flex-col items-center justify-center gap-5 px-10"
     >
-      <LoginInput
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        label="Tên"
+      <FormInput
         type="text"
-        placeholder="placeholder"
+        label="Tên tài khoản"
+        name="name"
+        placeholder="Nguyễn Văn A"
+        register={register}
+        error={errors.name}
       />
-      <LoginInput
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
+      <FormInput
+        type="email"
         label="Email"
-        type="text"
-        placeholder="placeholder"
+        name="email"
+        placeholder="nguyenvana@example.com"
+        register={register}
+        error={errors.email}
       />
-      <LoginButton label="Đăng nhập" />
+
+      <FormButton label="Đăng nhập" />
     </form>
   );
 };

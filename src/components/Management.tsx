@@ -4,7 +4,8 @@ import NavBar from "./NavBar";
 import Popup from "./Popup";
 import Table from "./Table";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import FormPopup from "./FormPopup";
+import PopupForm from "./PopupForm";
+import type { FormData } from "../app/types";
 
 type PopupType = "delete" | "status" | null;
 type FormType = "add" | "edit" | null;
@@ -63,22 +64,19 @@ const Management = () => {
     setCreatingAccount(true);
   };
 
-  const handleSubmit = (e: React.FormEvent, account: any) => {
-    e.preventDefault();
-
+  const handleSubmit = (data: FormData) => {
     if (formType === "edit") {
       dispatch({
         type: "account/editAccount",
         payload: {
           id: pendingItem.id,
-          name: account.name,
-          email: account.email,
+          data: data,
         },
       });
     } else {
       dispatch({
         type: "account/addAccount",
-        payload: { name: account.name, email: account.email },
+        payload: data,
       });
     }
     setCreatingAccount(false);
@@ -91,12 +89,13 @@ const Management = () => {
   return (
     <div>
       {creatingAccount && (
-        <FormPopup
+        <PopupForm
+          title={formType === "edit" ? "Edit account" : "Add new account"}
           defaultValues={formType === "edit" ? pendingItem : {}}
           buttonLabel={
             formType === "edit" ? "Update account" : "Create account"
           }
-          handleSubmit={handleSubmit}
+          onSubmit={handleSubmit}
         />
       )}
       {popupVisible && (

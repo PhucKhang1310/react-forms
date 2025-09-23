@@ -79,7 +79,8 @@ const AccountSlice = createSlice({
       state.accounts.push(newAccount);
     },
     editAccount: (state, action) => {
-      const { id, name, email } = action.payload;
+      const { id, data } = action.payload;
+      const { name, email } = data;
       const account = state.accounts.find((acc) => acc.id === id);
       if (account) {
         account.name = name;
