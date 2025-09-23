@@ -1,12 +1,16 @@
 interface FormButtonProps {
   label: string;
+  type?: "button" | "submit";
+  variant?: "bordered" | "filled";
+  onClick?: () => void;
 }
 
-const FormButton = ({ label }: FormButtonProps) => {
+const FormButton = ({ label, type = "submit", variant = "filled", onClick }: FormButtonProps) => {
   return (
     <button
-      className="mt-5 box-border w-auto rounded-md bg-[#dcd7c9] px-5 py-2 hover:cursor-pointer hover:opacity-90 active:opacity-50"
-      type="submit"
+      className={`${variant === "bordered" ? "border border-gray-200" : "bg-[#dcd7c9]"} mt-5 box-border w-1/3 rounded-md  px-5 py-2 hover:cursor-pointer hover:opacity-90 active:opacity-50`}
+      type={type}
+      onClick={onClick}
     >
       {label}
     </button>

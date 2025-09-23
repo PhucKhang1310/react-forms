@@ -83,6 +83,11 @@ const Management = () => {
     setPendingItem(null);
   };
 
+  const onCancel = () => {
+    setCreatingAccount(false);
+    setPendingItem(null);
+  }
+
   const deleteMessage = `Are you sure you want to delete ${pendingItem?.name}?`;
   const statusMessage = `Are you sure you want to change the status of ${pendingItem?.name}?`;
 
@@ -96,6 +101,7 @@ const Management = () => {
             formType === "edit" ? "Update account" : "Create account"
           }
           onSubmit={handleSubmit}
+          onCancel={onCancel}
         />
       )}
       {popupVisible && (

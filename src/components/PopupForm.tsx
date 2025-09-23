@@ -12,12 +12,14 @@ interface PopupFormProps {
   };
   buttonLabel?: string;
   onSubmit: (data: FormData) => void;
+  onCancel?: () => void;
 }
 
 const PopupForm = ({
   defaultValues = { name: "", email: "" },
   buttonLabel = "Create account",
   onSubmit,
+  onCancel,
   title,
 }: PopupFormProps) => {
   const {
@@ -52,7 +54,15 @@ const PopupForm = ({
             error={errors.email}
             defaultValue={defaultValues.email}
           />
-          <FormButton label={buttonLabel} />
+          <div className="flex w-full justify-around">
+            <FormButton
+              label="Cancel"
+              type="button"
+              onClick={onCancel}
+              variant="bordered"
+            />
+            <FormButton label={buttonLabel} />
+          </div>
         </form>
       </div>
     </div>
