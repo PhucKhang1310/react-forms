@@ -1,14 +1,15 @@
-import { useAppSelector } from "./app/hooks";
-import FormPopup from "./components/PopupForm";
 import Login from "./components/Login";
 import Management from "./components/Management";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 const App = () => {
-  const isLoggedIn = useAppSelector((state) => state.account.isLoggedIn);
   return (
-    <div>
-      <Management />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/management" element={<Management />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 export default App;

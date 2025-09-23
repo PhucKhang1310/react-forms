@@ -61,7 +61,7 @@ const AccountSlice = createSlice({
     login: (state, action) => {
       const { name, email } = action.payload;
       const user = state.accounts.find(
-        (acc) => acc.name === name && acc.email === email,
+        (acc) => acc.name === name && acc.email === email && acc.status === true,
       );
       if (user) {
         state.isLoggedIn = true;
@@ -88,6 +88,9 @@ const AccountSlice = createSlice({
         account.updatedAt = new Date().toLocaleDateString();
       }
     },
+    logout: (state) => {
+      state.isLoggedIn = false;
+    }
   },
 });
 

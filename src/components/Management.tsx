@@ -6,6 +6,7 @@ import Table from "./Table";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import PopupForm from "./PopupForm";
 import type { FormData } from "../app/types";
+import Error from "./Error";
 
 type PopupType = "delete" | "status" | null;
 type FormType = "add" | "edit" | null;
@@ -20,6 +21,8 @@ const Management = () => {
 
   const TableData = useAppSelector((state) => state.account.accounts);
   const dispatch = useAppDispatch();
+
+  const isLoggedIn = useAppSelector((state) => state.account.isLoggedIn);
 
   const enableEdit = (item: any) => {
     setFormType("edit");
@@ -86,10 +89,14 @@ const Management = () => {
   const onCancel = () => {
     setCreatingAccount(false);
     setPendingItem(null);
-  }
+  };
 
   const deleteMessage = `Are you sure you want to delete ${pendingItem?.name}?`;
   const statusMessage = `Are you sure you want to change the status of ${pendingItem?.name}?`;
+
+  if (!isLoggedIn) {
+    return <Error />;
+  }
 
   return (
     <div>
