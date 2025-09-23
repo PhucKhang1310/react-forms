@@ -6,8 +6,9 @@ const App = () => {
   const isLoggedIn = useAppSelector((state) => state.account.isLoggedIn);
   return (
     <div>
-      {!isLoggedIn && <Login />}
-      {isLoggedIn && <Management />}
+      {/* {!isLoggedIn && <Login />}
+      {isLoggedIn && <Management />} */}
+      <Management />
     </div>
   );
 };
