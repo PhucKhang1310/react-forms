@@ -14,10 +14,10 @@ const LoginInput = ({
   onChange,
 }: LoginInputProps) => {
   return (
-    <div className="flex flex-col justify-start gap-1">
+    <div className="flex flex-col justify-start gap-1 w-full">
       <label>{label}</label>
       <input
-        className="h-6 w-full rounded-md border border-[#DCD7C9] px-2 placeholder:opacity-30 focus:ring-1 focus:ring-[#DCD7C9] focus:outline-none active:outline-none"
+        className="h-6 w-full rounded-md border border-[#DCD7C9] px-2 shadow-md placeholder:opacity-30 focus:ring-1 focus:ring-[#DCD7C9] focus:outline-none active:outline-none"
         value={value}
         onChange={onChange}
         type={type}

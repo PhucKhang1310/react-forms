@@ -1,34 +1,11 @@
-import { useState } from "react";
-import { useAppDispatch } from "../app/hooks";
-import LoginInput from "./LoginInput";
+import LoginForm from "./LoginForm";
+
 const Login = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const dispatch = useAppDispatch();
-  const handleLogin = () => {
-    dispatch({ type: "account/login", payload: { username, email } });
-  };
   return (
     <div className="flex h-screen items-center justify-center">
-      <div className="flex flex-col items-center gap-5 rounded-sm border border-[#DCD7C9] bg-white p-10 shadow-md">
-        <h2>Đăng nhập</h2>
-        <form action="">
-          <LoginInput
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            label="Tên"
-            type="text"
-            placeholder="placeholder"
-          />
-          <LoginInput
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            label="Mật khẩu"
-            type="password"
-            placeholder="placeholder"
-          />
-        </form>
-        <button onClick={() => handleLogin()}>Đăng nhập</button>
+      <div className="flex flex-col justify-center items-center gap-5 rounded-sm border border-[#DCD7C9] bg-white w-1/5 h-1/3 shadow-md">
+        <h2 className="text-xl font-semibold">Đăng nhập</h2>
+        <LoginForm />
       </div>
     </div>
   );
