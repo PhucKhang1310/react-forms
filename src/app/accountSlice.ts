@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, nanoid } from "@reduxjs/toolkit";
 export interface AccountOptions {
   id: string;
   name: string;
@@ -59,17 +59,37 @@ const AccountSlice = createSlice({
       );
     },
     login: (state, action) => {
-      const { username, email } = action.payload;
+      const { name, email } = action.payload;
       const user = state.accounts.find(
-        (acc) => acc.name === username && acc.email === email,
+        (acc) => acc.name === name && acc.email === email,
       );
       if (user) {
         state.isLoggedIn = true;
       }
     },
+    addAccount: (state, action) => {
+      const { name, email } = action.payload;
+      const newAccount: AccountOptions = {
+        id: nanoid(),
+        name,
+        email,
+        updatedAt: new Date().toLocaleDateString(),
+        status: false,
+      };
+      state.accounts.push(newAccount);
+    },
+    editAccount: (state, action) => {
+      const { id, name, email } = action.payload;
+      const account = state.accounts.find((acc) => acc.id === id);
+      if (account) {
+        account.name = name;
+        account.email = email;
+        account.updatedAt = new Date().toLocaleDateString();
+      }
+    },
   },
 });
 
-export const { toggleAccountStatus, deleteAccount, login } =
+export const { toggleAccountStatus, deleteAccount, login, addAccount, editAccount } =
   AccountSlice.actions;
 export default AccountSlice.reducer;

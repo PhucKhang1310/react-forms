@@ -26,8 +26,8 @@ const LoginForm = () => {
       <LoginInput
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        label="Mật khẩu"
-        type="password"
+        label="Email"
+        type="text"
         placeholder="placeholder"
       />
       <LoginButton label="Đăng nhập" />

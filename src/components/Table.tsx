@@ -10,6 +10,7 @@ interface TableProps {
   items?: TableItems[];
   onToggle?: (item: TableItems) => void;
   onDelete?: (item: TableItems) => void;
+  onEdit?: (item: TableItems) => void;
 }
 
 const tableHeaders = [
@@ -22,7 +23,7 @@ const tableHeaders = [
 
 const tableBorder = "border border-black";
 
-const Table = ({ onDelete, onToggle, items }: TableProps) => {
+const Table = ({ onDelete, onToggle, onEdit, items }: TableProps) => {
   return (
     <div>
       <table className="w-full border-collapse">
@@ -51,9 +52,9 @@ const Table = ({ onDelete, onToggle, items }: TableProps) => {
               </td>
               <td className={`${tableBorder} pl-3.5`}>
                 <div className="flex items-center justify-center gap-3">
-                  <button className="edit-icon aspect-square h-5 bg-center bg-no-repeat" />
+                  <button className="edit-icon aspect-square h-5 bg-center bg-no-repeat hover:cursor-pointer" onClick={() => onEdit?.(item)} />
                   <button
-                    className="delete-icon aspect-square h-5 bg-center bg-no-repeat"
+                    className="delete-icon aspect-square h-5 bg-center bg-no-repeat hover:cursor-pointer"
                     onClick={() => onDelete?.(item)}
                   />
                 </div>
