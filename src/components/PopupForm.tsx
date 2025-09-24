@@ -17,7 +17,7 @@ interface PopupFormProps {
 
 const PopupForm = ({
   defaultValues = { name: "", email: "" },
-  buttonLabel = "Create account",
+  buttonLabel = "Thêm tài khoản",
   onSubmit,
   onCancel,
   title,
@@ -56,7 +56,7 @@ const PopupForm = ({
           />
           <div className="flex w-full justify-around">
             <FormButton
-              label="Cancel"
+              label="Hủy"
               type="button"
               onClick={onCancel}
               variant="bordered"

@@ -15,21 +15,23 @@ const LoginForm = () => {
   } = useForm<FormData>({ resolver: zodResolver(UserSchema as any) });
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const isLoggedIn = useAppSelector((state) => state.account.isLoggedIn);
+  const loginError = useAppSelector((state) => state.account.loginError);
+
   const onSubmit = (data: FormData) => {
     dispatch({ type: "account/login", payload: data });
+    if (!isLoggedIn) {
+      setHasFailed(true);
+    }
   };
 
-  const [isFirstRender, setIsFirstRender] = useState(true);
-  const loginSuccess = useAppSelector((state) => state.account.isLoggedIn);
-
   useEffect(() => {
-    setIsFirstRender(false);
-    if (loginSuccess) {
+    if (isLoggedIn) {
       navigate("/management");
-    }
-  }, [loginSuccess]);
+    } 
+  }, [isLoggedIn]);
 
-  
+  const [hasFailed, setHasFailed] = useState(false);
 
   return (
     <form
@@ -52,9 +54,9 @@ const LoginForm = () => {
         register={register}
         error={errors.email}
       />
-      {!isFirstRender && (
+      {hasFailed && (
         <span className="text-red-500">
-          Tên tài khoản hoặc email không đúng
+         {loginError}
         </span>
       )}
       <FormButton label="Đăng nhập" />

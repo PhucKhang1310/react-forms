@@ -9,9 +9,9 @@ interface PopupProps {
 const Popup = ({
   onConfirm,
   onCancel,
-  message = "Do you really want to do this?",
-  confirmText = "Yes",
-  cancelText = "No",
+  message = "Message",
+  confirmText = "Có",
+  cancelText = "Hủy",
 }: PopupProps) => {
   return (
     <div className="absolute top-0 left-0 z-10 flex h-screen w-screen items-center justify-center bg-[rgba(0,0,0,0.5)]">

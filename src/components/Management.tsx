@@ -7,6 +7,8 @@ import { useAppDispatch, useAppSelector } from "../app/hooks";
 import PopupForm from "./PopupForm";
 import type { FormData } from "../app/types";
 import Error from "./Error";
+import ManagementButton from "./ManagementButton";
+import { useNavigate } from "react-router-dom";
 
 type PopupType = "delete" | "status" | null;
 type FormType = "add" | "edit" | null;
@@ -21,8 +23,14 @@ const Management = () => {
 
   const TableData = useAppSelector((state) => state.account.accounts);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const isLoggedIn = useAppSelector((state) => state.account.isLoggedIn);
+
+  const logout = () => {
+    navigate("/");
+    dispatch({ type: "account/logout" });
+  };
 
   const enableEdit = (item: any) => {
     setFormType("edit");
@@ -91,8 +99,9 @@ const Management = () => {
     setPendingItem(null);
   };
 
-  const deleteMessage = `Are you sure you want to delete ${pendingItem?.name}?`;
-  const statusMessage = `Are you sure you want to change the status of ${pendingItem?.name}?`;
+  const deleteMessage = `Xóa tài khoản ${pendingItem?.name}?`;
+  const statusAction = `${pendingItem?.status ? "Hủy kích hoạt" : "Kích hoạt"}`;
+  const statusMessage = `${statusAction} tài khoản ${pendingItem?.name}?`;
 
   if (!isLoggedIn) {
     return <Error />;
@@ -102,11 +111,9 @@ const Management = () => {
     <div>
       {creatingAccount && (
         <PopupForm
-          title={formType === "edit" ? "Edit account" : "Add new account"}
+          title={formType === "edit" ? "Thay đổi thông tin" : "Thêm tài khoản"}
           defaultValues={formType === "edit" ? pendingItem : {}}
-          buttonLabel={
-            formType === "edit" ? "Update account" : "Create account"
-          }
+          buttonLabel={formType === "edit" ? "Thay đổi" : "Tạo"}
           onSubmit={handleSubmit}
           onCancel={onCancel}
         />
@@ -114,8 +121,7 @@ const Management = () => {
       {popupVisible && (
         <Popup
           message={popupType === "status" ? statusMessage : deleteMessage}
-          confirmText={popupType === "status" ? "Update" : "Delete"}
-          cancelText="Cancel"
+          confirmText={popupType === "status" ? statusAction : "Xóa"}
           onConfirm={onConfirm}
           onCancel={closePopup}
         />
@@ -126,12 +132,10 @@ const Management = () => {
         <div className="flex w-full flex-col p-5">
           <div className="flex justify-between pb-3">
             <h2 className="text-lg font-bold">Danh sách</h2>
-            <button
-              className="text-md h-10 w-25 bg-[#dcd7c9] font-bold hover:cursor-pointer hover:opacity-90 active:opacity-70"
-              onClick={createAccount}
-            >
-              Thêm
-            </button>
+            <div className="flex gap-5">
+              <ManagementButton label="Thêm" onClick={createAccount} />
+              <ManagementButton label="Logout" variant="red" onClick={logout} />
+            </div>
           </div>
           <Table
             items={TableData}

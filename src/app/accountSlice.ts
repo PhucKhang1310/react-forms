@@ -34,11 +34,13 @@ const Accounts: AccountOptions[] = [
 export interface AccountState {
   accounts: AccountOptions[];
   isLoggedIn?: boolean;
+  loginError?: string;
 }
 
 const initialState: AccountState = {
   accounts: Accounts,
   isLoggedIn: false,
+  loginError: undefined,
 };
 
 const AccountSlice = createSlice({
@@ -61,10 +63,20 @@ const AccountSlice = createSlice({
     login: (state, action) => {
       const { name, email } = action.payload;
       const user = state.accounts.find(
-        (acc) => acc.name === name && acc.email === email && acc.status === true,
+        (acc) => acc.name === name
       );
-      if (user) {
+      if (!user) {
+        state.loginError = "Tài khoản không tồn tại";
+      }
+      else if (user.email !== email) {
+        state.loginError = "Email không đúng";
+      }
+      else if (!user.status){
+        state.loginError = "Tài khoản chưa được kích hoạt";
+      }
+      else {
         state.isLoggedIn = true;
+        state.loginError = undefined;
       }
     },
     addAccount: (state, action) => {

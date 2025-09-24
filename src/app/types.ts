@@ -6,6 +6,9 @@ export type FormData = {
 };
 
 export const UserSchema: ZodType<FormData> = z.object({
-  name: z.string().min(1, "Name is required"),
-  email: z.email("Invalid email address"),
+  name: z
+    .string()
+    .min(1, "Tên người dùng không hợp lệ")
+    .regex(/^[\p{L}\s]+$/u, "Tên chỉ được chứa chữ cái và khoảng trắng"),
+  email: z.email("Địa chỉ email không hợp lệ"),
 });
