@@ -62,19 +62,14 @@ const AccountSlice = createSlice({
     },
     login: (state, action) => {
       const { name, email } = action.payload;
-      const user = state.accounts.find(
-        (acc) => acc.name === name
-      );
+      const user = state.accounts.find((acc) => acc.name === name);
       if (!user) {
         state.loginError = "Tài khoản không tồn tại";
-      }
-      else if (user.email !== email) {
+      } else if (user.email !== email) {
         state.loginError = "Email không đúng";
-      }
-      else if (!user.status){
+      } else if (!user.status) {
         state.loginError = "Tài khoản chưa được kích hoạt";
-      }
-      else {
+      } else {
         state.isLoggedIn = true;
         state.loginError = undefined;
       }
@@ -102,10 +97,15 @@ const AccountSlice = createSlice({
     },
     logout: (state) => {
       state.isLoggedIn = false;
-    }
+    },
   },
 });
 
-export const { toggleAccountStatus, deleteAccount, login, addAccount, editAccount } =
-  AccountSlice.actions;
+export const {
+  toggleAccountStatus,
+  deleteAccount,
+  login,
+  addAccount,
+  editAccount,
+} = AccountSlice.actions;
 export default AccountSlice.reducer;

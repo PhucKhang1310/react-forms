@@ -52,7 +52,10 @@ const Table = ({ onDelete, onToggle, onEdit, items }: TableProps) => {
               </td>
               <td className={`${tableBorder} pl-3.5`}>
                 <div className="flex items-center justify-center gap-3">
-                  <button className="edit-icon aspect-square h-5 bg-center bg-no-repeat hover:cursor-pointer" onClick={() => onEdit?.(item)} />
+                  <button
+                    className="edit-icon aspect-square h-5 bg-center bg-no-repeat hover:cursor-pointer"
+                    onClick={() => onEdit?.(item)}
+                  />
                   <button
                     className="delete-icon aspect-square h-5 bg-center bg-no-repeat hover:cursor-pointer"
                     onClick={() => onDelete?.(item)}

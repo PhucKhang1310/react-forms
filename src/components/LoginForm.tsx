@@ -17,6 +17,7 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const isLoggedIn = useAppSelector((state) => state.account.isLoggedIn);
   const loginError = useAppSelector((state) => state.account.loginError);
+  const [hasFailed, setHasFailed] = useState(false);
 
   const onSubmit = (data: FormData) => {
     dispatch({ type: "account/login", payload: data });
@@ -28,10 +29,8 @@ const LoginForm = () => {
   useEffect(() => {
     if (isLoggedIn) {
       navigate("/management");
-    } 
+    }
   }, [isLoggedIn]);
-
-  const [hasFailed, setHasFailed] = useState(false);
 
   return (
     <form
@@ -54,11 +53,7 @@ const LoginForm = () => {
         register={register}
         error={errors.email}
       />
-      {hasFailed && (
-        <span className="text-red-500">
-         {loginError}
-        </span>
-      )}
+      {hasFailed && <span className="text-red-500">{loginError}</span>}
       <FormButton label="Đăng nhập" />
     </form>
   );

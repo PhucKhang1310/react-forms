@@ -23,7 +23,7 @@ const FormInput = ({
   defaultValue,
 }: FormFieldProps) => {
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex w-full flex-col">
       <h1>{label}</h1>
       <input
         className="h-8 w-full rounded-md border border-[#DCD7C9] shadow-md placeholder:opacity-30 focus:ring-1 focus:ring-[#DCD7C9] focus:outline-none active:outline-none"
@@ -32,7 +32,9 @@ const FormInput = ({
         {...register(name)}
         defaultValue={defaultValue}
       />
-      {error && <span className="text-red-600 text-sm italic">{error.message}</span>}
+      {error && (
+        <span className="text-sm text-red-600 italic">{error.message}</span>
+      )}
     </div>
   );
 };
