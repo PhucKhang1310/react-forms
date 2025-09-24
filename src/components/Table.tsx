@@ -15,7 +15,8 @@ const tableHeaders = [
   { label: "" },
 ];
 
-const tableBorder = "border border-black";
+const tableItem = "border border-black pl-3.5 w-1/5";
+const tableHead = "h-[30px]";
 
 const Table = ({ onDelete, onToggle, onEdit, items }: TableProps) => {
   return (
@@ -24,7 +25,7 @@ const Table = ({ onDelete, onToggle, onEdit, items }: TableProps) => {
         <thead>
           <tr className="bg-[#DCD7C9] text-left">
             {tableHeaders.map((header, index) => (
-              <th key={index} className={`${tableBorder} h-[30px] pl-3.5`}>
+              <th key={index} className={`${tableItem} ${tableHead}`}>
                 {header.label}
               </th>
             ))}
@@ -32,20 +33,20 @@ const Table = ({ onDelete, onToggle, onEdit, items }: TableProps) => {
         </thead>
         <tbody>
           {items?.map((item) => (
-            <tr key={item.id} className="h-[30px]">
-              <td className={`${tableBorder} pl-3.5`}>{item.name}</td>
-              <td className={`${tableBorder} pl-3.5`}>{item.email}</td>
-              <td className={`${tableBorder} pl-3.5`}>{item.updatedAt}</td>
-              <td className={`${tableBorder} pl-3.5`}>
+            <tr key={item.id} className={tableHead}>
+              <td className={`${tableItem}`}>{item.name}</td>
+              <td className={`${tableItem}`}>{item.email}</td>
+              <td className={`${tableItem}`}>{item.updatedAt}</td>
+              <td className={`${tableItem}`}>
                 <input
                   type="checkbox"
                   checked={item.status}
                   onClick={() => onToggle?.(item)}
                   className="check-icon mr-1 mb-1 border rounded border-gray-400 bg-gray-300 bg-none bg-cover bg-no-repeat ring-0 checked:bg-white"
                 />
-                {item.status ? "Kích hoạt" : "Chưa kích hoạt"}
+                {item.status ? "Đã kích hoạt" : "Chưa kích hoạt"}
               </td>
-              <td className={`${tableBorder} pl-3.5`}>
+              <td className={`${tableItem} pl-3.5`}>
                 <div className="flex items-center justify-center gap-3">
                   <button
                     className="edit-icon aspect-square h-5 bg-center bg-no-repeat hover:cursor-pointer"
