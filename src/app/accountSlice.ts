@@ -5,6 +5,7 @@ export interface AccountOptions {
   updatedAt: string;
   email: string;
   status: boolean;
+  password: string;
 }
 
 const Accounts: AccountOptions[] = [
@@ -14,6 +15,7 @@ const Accounts: AccountOptions[] = [
     email: "nguyenvana@example.com",
     updatedAt: "08/07/2022",
     status: true,
+    password: "Password123!",
   },
   {
     id: "2",
@@ -21,6 +23,7 @@ const Accounts: AccountOptions[] = [
     email: "nguyenvanb@example.com",
     updatedAt: "08/08/2022",
     status: true,
+    password: "123Password@",
   },
   {
     id: "3",
@@ -28,6 +31,7 @@ const Accounts: AccountOptions[] = [
     email: "nguyenvanc@example.com",
     updatedAt: "08/09/2022",
     status: false,
+    password: "Pass1234!",
   },
 ];
 
@@ -61,12 +65,12 @@ const AccountSlice = createSlice({
       );
     },
     login: (state, action) => {
-      const { name, email } = action.payload;
+      const { name, password } = action.payload;
       const user = state.accounts.find((acc) => acc.name === name);
       if (!user) {
         state.loginError = "Tài khoản không tồn tại";
-      } else if (user.email !== email) {
-        state.loginError = "Email không đúng";
+      } else if (user.password !== password) {
+        state.loginError = "Mật khẩu không đúng";
       } else if (!user.status) {
         state.loginError = "Tài khoản chưa được kích hoạt";
       } else {
@@ -75,13 +79,14 @@ const AccountSlice = createSlice({
       }
     },
     addAccount: (state, action) => {
-      const { name, email } = action.payload;
+      const { name, email, password } = action.payload;
       const newAccount: AccountOptions = {
         id: nanoid(),
         name,
         email,
         updatedAt: new Date().toLocaleDateString(),
-        status: false,
+        status: true,
+        password,
       };
       state.accounts.push(newAccount);
     },

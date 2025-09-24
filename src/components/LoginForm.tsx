@@ -1,7 +1,7 @@
 import FormButton from "./FormButton";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { useForm } from "react-hook-form";
-import { type FormData, UserSchema } from "../app/types";
+import { type LoginFormData, LoginSchema } from "../app/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormInput from "./FormInput";
 import { useNavigate } from "react-router-dom";
@@ -12,14 +12,14 @@ const LoginForm = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({ resolver: zodResolver(UserSchema as any) });
+  } = useForm<LoginFormData>({ resolver: zodResolver(LoginSchema as any) });
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const isLoggedIn = useAppSelector((state) => state.account.isLoggedIn);
   const loginError = useAppSelector((state) => state.account.loginError);
   const [hasFailed, setHasFailed] = useState(false);
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: LoginFormData) => {
     dispatch({ type: "account/login", payload: data });
     if (!isLoggedIn) {
       setHasFailed(true);
@@ -37,7 +37,7 @@ const LoginForm = () => {
       onSubmit={handleSubmit(onSubmit)}
       className="flex w-full flex-col items-center justify-center gap-5 px-10"
     >
-      <FormInput
+      <FormInput<LoginFormData>
         type="text"
         label="Tên tài khoản"
         name="name"
@@ -45,13 +45,13 @@ const LoginForm = () => {
         register={register}
         error={errors.name}
       />
-      <FormInput
-        type="email"
-        label="Email"
-        name="email"
-        placeholder="nguyenvana@example.com"
+      <FormInput<LoginFormData>
+        type="password"
+        label="Mật khẩu"
+        name="password"
+        placeholder="Nhập mật khẩu"
         register={register}
-        error={errors.email}
+        error={errors.password}
       />
       {hasFailed && <span className="text-red-500">{loginError}</span>}
       <FormButton label="Đăng nhập" />

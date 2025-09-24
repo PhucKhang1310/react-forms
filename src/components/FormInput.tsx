@@ -1,19 +1,16 @@
-import type { FieldError, UseFormRegister } from "react-hook-form";
-import type { FormData } from "../app/types";
+import type { FieldError, FieldValues, UseFormRegister } from "react-hook-form";
 
-type ValidFieldNames = "name" | "email";
-
-interface FormFieldProps {
+interface FormFieldProps<T extends FieldValues> {
   label: string;
   type: string;
   placeholder: string;
-  name: ValidFieldNames;
-  register: UseFormRegister<FormData>;
+  name: keyof T;
+  register: UseFormRegister<T>;
   error: FieldError | undefined;
   defaultValue?: string;
 }
 
-const FormInput = ({
+const FormInput = <T extends FieldValues>({
   label,
   type,
   placeholder,
@@ -21,7 +18,7 @@ const FormInput = ({
   register,
   error,
   defaultValue,
-}: FormFieldProps) => {
+}: FormFieldProps<T>) => {
   return (
     <div className="flex w-full flex-col">
       <h1>{label}</h1>
@@ -29,7 +26,7 @@ const FormInput = ({
         className="h-8 w-full rounded-md border border-[#DCD7C9] shadow-md placeholder:opacity-30 focus:ring-1 focus:ring-[#DCD7C9] focus:outline-none active:outline-none"
         type={type}
         placeholder={placeholder}
-        {...register(name)}
+        {...register(name as any)}
         defaultValue={defaultValue}
       />
       {error && (

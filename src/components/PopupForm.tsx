@@ -1,6 +1,6 @@
 import FormButton from "./FormButton";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { UserSchema, type FormData } from "../app/types";
+import { RegisterSchema, type RegisterFormData } from "../app/types";
 import { useForm } from "react-hook-form";
 import FormInput from "./FormInput";
 
@@ -11,7 +11,7 @@ interface PopupFormProps {
     email: string;
   };
   buttonLabel?: string;
-  onSubmit: (data: FormData) => void;
+  onSubmit: (data: RegisterFormData) => void;
   onCancel?: () => void;
 }
 
@@ -26,7 +26,7 @@ const PopupForm = ({
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({ resolver: zodResolver(UserSchema as any) });
+  } = useForm<RegisterFormData>({ resolver: zodResolver(RegisterSchema as any) });
 
   return (
     <div className="absolute top-0 left-0 z-10 flex h-screen w-screen items-center justify-center bg-[rgba(0,0,0,0.5)]">
@@ -36,7 +36,7 @@ const PopupForm = ({
           className="flex w-3/4 flex-col items-start gap-3"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <FormInput
+          <FormInput<RegisterFormData>
             type="text"
             label="Tên tài khoản"
             name="name"
@@ -45,7 +45,7 @@ const PopupForm = ({
             error={errors.name}
             defaultValue={defaultValues.name}
           />
-          <FormInput
+          <FormInput<RegisterFormData>
             type="email"
             label="Email"
             name="email"

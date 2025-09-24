@@ -5,7 +5,7 @@ import Popup from "./Popup";
 import Table from "./Table";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import PopupForm from "./PopupForm";
-import type { FormData } from "../app/types";
+import type { RegisterFormData } from "../app/types";
 import Error from "./Error";
 import ManagementButton from "./ManagementButton";
 import { useNavigate } from "react-router-dom";
@@ -75,7 +75,7 @@ const Management = () => {
     setCreatingAccount(true);
   };
 
-  const handleSubmit = (data: FormData) => {
+  const handleSubmit = (data: RegisterFormData) => {
     if (formType === "edit") {
       dispatch({
         type: "account/editAccount",
