@@ -58,7 +58,7 @@ const EditForm = ({
         readOnly
       />
       <FormInput<EditFormData>
-        type="text"
+        type="password"
         label="New Password"
         name="newPassword"
         placeholder="********"

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Drawer from "./Drawer";
 import NavBar from "./NavBar";
 import Popup from "./Popup";
@@ -27,6 +27,7 @@ const Management = () => {
   const navigate = useNavigate();
 
   const currentUser = useAppSelector((state) => state.account.currentAccount);
+  const isLoggedIn = useAppSelector((state) => state.account.loginError);
   const currentEmails = useAppSelector((state) =>
     state.account.accounts
       .map((acc) => acc.email)
@@ -106,9 +107,11 @@ const Management = () => {
   const statusAction = `${pendingItem?.status ? "Hủy kích hoạt" : "Kích hoạt"}`;
   const statusMessage = `${statusAction} tài khoản ${pendingItem?.name}?`;
 
-  // if (!currentUser) {
-  //   return <Error />;
-  // }
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigate("/error");
+    }
+  });
 
   return (
     <div className="bg-white">
