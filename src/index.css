@@ -1,9 +1,10 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/forms";
 
 body {
   padding: 0px;
   margin: 0;
-  background-color: rgb(255, 255, 255);
+  background-color: #d9d9d9;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   overflow-x: hidden;
   overflow-y: hidden;
@@ -19,6 +20,14 @@ body {
 
 .edit-icon {
   background-image: url("src/assets/edit.svg");
+}
+
+input.check-icon:checked {
+  background-image: url("src/assets/check.svg");
+}
+
+.cross-icon {
+  background-image: url("src/assets/cross.svg");
 }
 
 .main-color {

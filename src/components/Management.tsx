@@ -111,7 +111,7 @@ const Management = () => {
   // }
 
   return (
-    <div>
+    <div className="bg-white">
       {creatingAccount && (
         <PopupRegister
           title="Tạo tài khoản"
