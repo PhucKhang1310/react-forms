@@ -25,7 +25,7 @@ const FormInput = <T extends FieldValues>({
     <div className="flex w-full flex-col">
       <h1>{label}</h1>
       <input
-        className={`h-8 w-full rounded-md border border-[#DCD7C9] shadow-md placeholder:opacity-30 focus:ring-1 focus:ring-[#DCD7C9] focus:outline-none active:outline-none ${readOnly ? "bg-gray-100 cursor-pointer text-gray-500 active:" : ""}`}
+        className={`h-8 w-full rounded-md border border-[#DCD7C9] shadow-md placeholder:opacity-30 focus:ring-1 focus:ring-[#DCD7C9] focus:outline-none active:outline-none ${readOnly ? "active: cursor-pointer bg-gray-100 text-gray-500" : ""}`}
         type={type}
         placeholder={placeholder}
         {...register(name as any)}

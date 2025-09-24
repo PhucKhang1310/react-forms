@@ -28,7 +28,7 @@ const LoginForm = () => {
 
   const registerAccount = () => {
     navigate("/register");
-  }
+  };
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -60,7 +60,12 @@ const LoginForm = () => {
       {hasFailed && <span className="text-red-500">{loginError}</span>}
       <div className="flex w-full justify-around">
         <FormButton label="Đăng nhập" />
-        <FormButton label="Đăng ký" variant="bordered" type="button" onClick={registerAccount} />
+        <FormButton
+          label="Đăng ký"
+          variant="bordered"
+          type="button"
+          onClick={registerAccount}
+        />
       </div>
     </form>
   );

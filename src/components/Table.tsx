@@ -42,7 +42,7 @@ const Table = ({ onDelete, onToggle, onEdit, items }: TableProps) => {
                   type="checkbox"
                   checked={item.status}
                   onClick={() => onToggle?.(item)}
-                  className="check-icon mr-1 mb-1 border rounded border-gray-400 bg-gray-300 bg-none bg-cover bg-no-repeat ring-0 checked:bg-white"
+                  className="check-icon mr-1 mb-1 rounded border border-gray-400 bg-gray-300 bg-none bg-cover bg-no-repeat ring-0 checked:bg-white"
                 />
                 {item.status ? "Đã kích hoạt" : "Chưa kích hoạt"}
               </td>

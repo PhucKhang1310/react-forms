@@ -11,8 +11,10 @@ interface RegisterFormProps {
 }
 
 const RegisterForm = ({ onCancel, onSubmit }: RegisterFormProps) => {
-    const currentEmails = useAppSelector((state) => state.account.accounts.map((account) => account.email));
-    const RegSchema = RegisterSchema(currentEmails);
+  const currentEmails = useAppSelector((state) =>
+    state.account.accounts.map((account) => account.email),
+  );
+  const RegSchema = RegisterSchema(currentEmails);
   const {
     register,
     handleSubmit,

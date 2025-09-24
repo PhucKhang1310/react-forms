@@ -5,14 +5,14 @@ import RegisterForm from "./RegisterForm";
 
 const Register = () => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const onSubmit = (data: RegisterFormData) => {
     dispatch({ type: "account/addAccount", payload: data });
     navigate("/");
   };
   const onCancel = () => {
     navigate("/");
-  }
+  };
 
   return (
     <div className="flex h-screen w-screen items-center justify-center">
