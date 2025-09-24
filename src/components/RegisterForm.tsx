@@ -3,21 +3,23 @@ import { RegisterSchema, type RegisterFormData } from "../app/types";
 import FormButton from "./FormButton";
 import FormInput from "./FormInput";
 import { useForm } from "react-hook-form";
-import { useAppDispatch } from "../app/hooks";
+import { useAppSelector } from "../app/hooks";
 
-const RegisterForm = () => {
+interface RegisterFormProps {
+  onCancel?: () => void;
+  onSubmit: (data: RegisterFormData) => void;
+}
+
+const RegisterForm = ({ onCancel, onSubmit }: RegisterFormProps) => {
+    const currentEmails = useAppSelector((state) => state.account.accounts.map((account) => account.email));
+    const RegSchema = RegisterSchema(currentEmails);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<RegisterFormData>({
-    resolver: zodResolver(RegisterSchema as any),
+    resolver: zodResolver(RegSchema as any),
   });
-
-  const dispatch = useAppDispatch();
-  const onSubmit = (data: RegisterFormData) => {
-    dispatch({ type: "account/addAccount", payload: data });
-  };
 
   return (
     <form
@@ -56,7 +58,15 @@ const RegisterForm = () => {
         register={register}
         error={errors.passwordConfirm}
       />
-      <FormButton label="Đăng ký" />
+      <div className="flex w-full justify-around">
+        <FormButton
+          label="Đóng"
+          type="button"
+          onClick={onCancel}
+          variant="bordered"
+        />
+        <FormButton label="Đăng ký" />
+      </div>
     </form>
   );
 };

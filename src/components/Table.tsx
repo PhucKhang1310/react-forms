@@ -1,16 +1,10 @@
-interface TableItems {
-  id: string;
-  name: string;
-  email: string;
-  updatedAt: string;
-  status?: boolean;
-}
+import type { AccountOptions } from "../app/accountSlice";
 
 interface TableProps {
-  items?: TableItems[];
-  onToggle?: (item: TableItems) => void;
-  onDelete?: (item: TableItems) => void;
-  onEdit?: (item: TableItems) => void;
+  items?: AccountOptions[];
+  onToggle?: (item: AccountOptions) => void;
+  onDelete?: (item: AccountOptions) => void;
+  onEdit?: (item: AccountOptions) => void;
 }
 
 const tableHeaders = [

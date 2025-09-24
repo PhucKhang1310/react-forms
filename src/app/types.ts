@@ -27,18 +27,50 @@ export type LoginFormData = {
   password: string;
 };
 
-export const RegisterSchema: ZodType<RegisterFormData> = z
-  .object({
-    name: nameSchema,
-    email: emailSchema,
-    password: passwordSchema,
-    passwordConfirm: passwordSchema,
-  })
-  .refine((data) => data.password === data.passwordConfirm, {
-    message: "Mật khẩu không khớp",
-  });
+export type EditFormData = {
+  name: string;
+  email: string;
+  password: string;
+  newPassword: string;
+};
+
+export const RegisterSchema = (existingEmails: string[]) => {
+  return z
+    .object({
+      name: nameSchema,
+      email: emailSchema,
+      password: passwordSchema,
+      passwordConfirm: passwordSchema,
+    })
+    .refine((data) => data.password === data.passwordConfirm, {
+      message: "Mật khẩu không khớp",
+      path: ["passwordConfirm"],
+    })
+    .refine((data) => !existingEmails.includes(data.email), {
+      message: "Email đã được đăng ký",
+      path: ["email"],
+    });
+};
 
 export const LoginSchema: ZodType<LoginFormData> = z.object({
   name: nameSchema,
   password: passwordSchema,
 });
+
+export const EditSchema = (currentEmails: string[]) => {
+  return z
+    .object({
+      name: nameSchema,
+      email: emailSchema,
+      password: passwordSchema,
+      newPassword: passwordSchema,
+    })
+    .refine((data) => data.password !== data.newPassword, {
+      message: "Mật khẩu mới phải khác mật khẩu cũ",
+      path: ["newPassword"],
+    })
+    .refine((data) => !currentEmails.includes(data.email), {
+      message: "Email đã được sử dụng",
+      path: ["email"],
+    });
+};

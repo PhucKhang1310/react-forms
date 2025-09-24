@@ -37,13 +37,13 @@ const Accounts: AccountOptions[] = [
 
 export interface AccountState {
   accounts: AccountOptions[];
-  isLoggedIn?: boolean;
+  currentAccount?: AccountOptions;
   loginError?: string;
 }
 
 const initialState: AccountState = {
   accounts: Accounts,
-  isLoggedIn: false,
+  currentAccount: undefined,
   loginError: undefined,
 };
 
@@ -74,7 +74,7 @@ const AccountSlice = createSlice({
       } else if (!user.status) {
         state.loginError = "Tài khoản chưa được kích hoạt";
       } else {
-        state.isLoggedIn = true;
+        state.currentAccount = user;
         state.loginError = undefined;
       }
     },
@@ -92,16 +92,17 @@ const AccountSlice = createSlice({
     },
     editAccount: (state, action) => {
       const { id, data } = action.payload;
-      const { name, email } = data;
+      const { name, email, newPassword } = data;
       const account = state.accounts.find((acc) => acc.id === id);
       if (account) {
         account.name = name;
         account.email = email;
+        account.password = newPassword;
         account.updatedAt = new Date().toLocaleDateString();
       }
     },
     logout: (state) => {
-      state.isLoggedIn = false;
+      state.currentAccount = undefined;
     },
   },
 });

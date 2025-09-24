@@ -15,7 +15,7 @@ const LoginForm = () => {
   } = useForm<LoginFormData>({ resolver: zodResolver(LoginSchema as any) });
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const isLoggedIn = useAppSelector((state) => state.account.isLoggedIn);
+  const isLoggedIn = useAppSelector((state) => state.account.currentAccount);
   const loginError = useAppSelector((state) => state.account.loginError);
   const [hasFailed, setHasFailed] = useState(false);
 
@@ -25,6 +25,10 @@ const LoginForm = () => {
       setHasFailed(true);
     }
   };
+
+  const registerAccount = () => {
+    navigate("/register");
+  }
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -54,7 +58,10 @@ const LoginForm = () => {
         error={errors.password}
       />
       {hasFailed && <span className="text-red-500">{loginError}</span>}
-      <FormButton label="Đăng nhập" />
+      <div className="flex w-full justify-around">
+        <FormButton label="Đăng nhập" />
+        <FormButton label="Đăng ký" variant="bordered" type="button" onClick={registerAccount} />
+      </div>
     </form>
   );
 };

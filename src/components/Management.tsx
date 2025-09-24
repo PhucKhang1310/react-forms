@@ -5,37 +5,41 @@ import Popup from "./Popup";
 import Table from "./Table";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import PopupForm from "./PopupForm";
-import type { RegisterFormData } from "../app/types";
-import Error from "./Error";
+import type { EditFormData, RegisterFormData } from "../app/types";
 import ManagementButton from "./ManagementButton";
+import type { AccountOptions } from "../app/accountSlice";
+import PopupRegister from "./PopupRegister";
 import { useNavigate } from "react-router-dom";
 
 type PopupType = "delete" | "status" | null;
-type FormType = "add" | "edit" | null;
 
 const Management = () => {
+  const [drawerOpen, setDrawerOpen] = useState(true);
   const [popupVisible, setPopupVisible] = useState(false);
   const [creatingAccount, setCreatingAccount] = useState(false);
+  const [editingAccount, setEditingAccount] = useState(false);
 
   const [popupType, setPopupType] = useState<PopupType>(null);
-  const [formType, setFormType] = useState<FormType>(null);
   const [pendingItem, setPendingItem] = useState<any>(null);
 
   const TableData = useAppSelector((state) => state.account.accounts);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const isLoggedIn = useAppSelector((state) => state.account.isLoggedIn);
+  const currentUser = useAppSelector((state) => state.account.currentAccount);
+  const currentEmails = useAppSelector((state) =>
+    state.account.accounts
+      .map((acc) => acc.email)
+      .filter((email) => email !== pendingItem?.email),
+  );
 
   const logout = () => {
-    navigate("/");
     dispatch({ type: "account/logout" });
+    navigate("/");
   };
 
-  const enableEdit = (item: any) => {
-    setFormType("edit");
-    setPendingItem(item);
-    setCreatingAccount(true);
+  const toggleDrawer = () => {
+    setDrawerOpen(!drawerOpen);
   };
 
   const openPopup = (type: PopupType, item: any) => {
@@ -70,52 +74,58 @@ const Management = () => {
     });
   };
 
-  const createAccount = () => {
-    setFormType("add");
+  const editAccount = (data: EditFormData) => {
+    dispatch({
+      type: "account/editAccount",
+      payload: { id: pendingItem.id, data: data },
+    });
+    closeForms();
+  };
+
+  const createAccount = (data: RegisterFormData) => {
+    dispatch({ type: "account/addAccount", payload: data });
+    closeForms();
+  };
+
+  const showAccountForm = () => {
     setCreatingAccount(true);
   };
 
-  const handleSubmit = (data: RegisterFormData) => {
-    if (formType === "edit") {
-      dispatch({
-        type: "account/editAccount",
-        payload: {
-          id: pendingItem.id,
-          data: data,
-        },
-      });
-    } else {
-      dispatch({
-        type: "account/addAccount",
-        payload: data,
-      });
-    }
-    setCreatingAccount(false);
-    setPendingItem(null);
+  const showEditForm = (account: AccountOptions) => {
+    setEditingAccount(true);
+    setPendingItem(account);
+    console.log(account);
   };
 
-  const onCancel = () => {
+  const closeForms = () => {
     setCreatingAccount(false);
-    setPendingItem(null);
+    setEditingAccount(false);
   };
 
   const deleteMessage = `Xóa tài khoản ${pendingItem?.name}?`;
   const statusAction = `${pendingItem?.status ? "Hủy kích hoạt" : "Kích hoạt"}`;
   const statusMessage = `${statusAction} tài khoản ${pendingItem?.name}?`;
 
-  if (!isLoggedIn) {
-    return <Error />;
-  }
+  // if (!currentUser) {
+  //   return <Error />;
+  // }
 
   return (
     <div>
       {creatingAccount && (
+        <PopupRegister
+          title="Tạo tài khoản"
+          onCancel={closeForms}
+          onSubmit={createAccount}
+        />
+      )}
+      {editingAccount && (
         <PopupForm
-          title={formType === "edit" ? "Thay đổi thông tin" : "Thêm tài khoản"}
-          defaultValues={formType === "edit" ? pendingItem : {}}
-          buttonLabel={formType === "edit" ? "Thay đổi" : "Tạo"}
-          onSubmit={handleSubmit}
-          onCancel={onCancel}
+          defaultValues={pendingItem}
+          title="Chỉnh sửa tài khoản"
+          onCancel={closeForms}
+          onSubmit={editAccount}
+          currentEmails={currentEmails}
         />
       )}
       {popupVisible && (
@@ -126,14 +136,14 @@ const Management = () => {
           onCancel={closePopup}
         />
       )}
-      <NavBar />
+      <NavBar username={currentUser?.name} onToggleDrawer={toggleDrawer} />
       <div className="flex">
-        <Drawer />
+        <Drawer isOpen={drawerOpen} />
         <div className="flex w-full flex-col p-5">
           <div className="flex justify-between pb-3">
             <h2 className="text-lg font-bold">Danh sách</h2>
             <div className="flex gap-5">
-              <ManagementButton label="Thêm" onClick={createAccount} />
+              <ManagementButton label="Thêm" onClick={showAccountForm} />
               <ManagementButton label="Logout" variant="red" onClick={logout} />
             </div>
           </div>
@@ -141,7 +151,7 @@ const Management = () => {
             items={TableData}
             onToggle={(item) => openPopup("status", item)}
             onDelete={(item) => openPopup("delete", item)}
-            onEdit={(item) => enableEdit(item)}
+            onEdit={(item) => showEditForm(item)}
           />
         </div>
       </div>
