@@ -10,6 +10,7 @@ import ManagementButton from "./ManagementButton";
 import type { AccountOptions } from "../app/accountSlice";
 import PopupRegister from "./PopupRegister";
 import { useNavigate } from "react-router-dom";
+import AntTable from "./AntTable";
 
 type PopupType = "delete" | "status" | null;
 
@@ -27,7 +28,6 @@ const Management = () => {
   const navigate = useNavigate();
 
   const currentUser = useAppSelector((state) => state.account.currentAccount);
-  const isLoggedIn = useAppSelector((state) => state.account.loginError);
   const currentEmails = useAppSelector((state) =>
     state.account.accounts
       .map((acc) => acc.email)
@@ -35,8 +35,8 @@ const Management = () => {
   );
 
   const logout = () => {
-    dispatch({ type: "account/logout" });
     navigate("/");
+    dispatch({ type: "account/logout" });
   };
 
   const toggleDrawer = () => {
@@ -95,7 +95,6 @@ const Management = () => {
   const showEditForm = (account: AccountOptions) => {
     setEditingAccount(true);
     setPendingItem(account);
-    console.log(account);
   };
 
   const closeForms = () => {
@@ -108,10 +107,10 @@ const Management = () => {
   const statusMessage = `${statusAction} tài khoản ${pendingItem?.name}?`;
 
   useEffect(() => {
-    if (!isLoggedIn) {
-      navigate("/error");
+    if (!currentUser) {
+      navigate("/");
     }
-  });
+  }, [currentUser]);
 
   return (
     <div className="bg-white">
@@ -150,11 +149,17 @@ const Management = () => {
               <ManagementButton label="Logout" variant="red" onClick={logout} />
             </div>
           </div>
-          <Table
+          {/* <Table
             items={TableData}
             onToggle={(item) => openPopup("status", item)}
             onDelete={(item) => openPopup("delete", item)}
             onEdit={(item) => showEditForm(item)}
+          /> */}
+          <AntTable
+            data={TableData}
+            onToggle={(record) => openPopup("status", record)}
+            onEdit={(record) => showEditForm(record)}
+            onDelete={(record) => openPopup("delete", record)}
           />
         </div>
       </div>
