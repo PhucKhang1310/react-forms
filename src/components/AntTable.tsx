@@ -1,8 +1,9 @@
 import {
   Button,
-  Input, Table,
+  Input,
+  Table,
   type InputRef,
-  type TableColumnType
+  type TableColumnType,
 } from "antd";
 import type { AccountOptions } from "../app/accountSlice";
 import Column from "antd/es/table/Column";
@@ -11,6 +12,7 @@ import { useRef, useState } from "react";
 import type { FilterDropdownProps } from "antd/es/table/interface";
 import Highlighter from "react-highlight-words";
 import { SearchOutlined } from "@ant-design/icons";
+import TableAction from "./TableAction";
 
 interface AntTableProps {
   data: AccountOptions[];
@@ -146,7 +148,9 @@ const AntTable = ({ data, onToggle, onDelete, onEdit }: AntTableProps) => {
           title="Ngày cập nhật"
           dataIndex="updatedAt"
           key="updatedAt"
-          sorter={(a, b) => parseDate(a.updatedAt).getTime() - parseDate(b.updatedAt).getTime()}
+          sorter={(a, b) =>
+            parseDate(a.updatedAt).getTime() - parseDate(b.updatedAt).getTime()
+          }
           sortDirections={["ascend", "descend"]}
         />
         <Column
@@ -175,12 +179,16 @@ const AntTable = ({ data, onToggle, onDelete, onEdit }: AntTableProps) => {
           key="action"
           render={(_, record: AccountOptions) => (
             <div className="flex items-center justify-center gap-3">
-              <button
-                className="edit-icon aspect-square h-5 bg-center bg-no-repeat hover:cursor-pointer"
+              <TableAction
+                className="edit-icon"
                 onClick={() => onEdit?.(record)}
               />
-              <button
-                className="delete-icon aspect-square h-5 bg-center bg-no-repeat hover:cursor-pointer"
+              <TableAction
+                className="article-icon"
+                // onClick={() => onView?.(record)}
+              />
+              <TableAction
+                className="delete-icon"
                 onClick={() => onDelete?.(record)}
               />
             </div>

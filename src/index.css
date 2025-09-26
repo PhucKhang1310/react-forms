@@ -31,6 +31,10 @@ input.check-icon:checked {
   background-image: url("src/assets/cross.svg");
 }
 
+.article-icon {
+  background-image: url("src/assets/article.svg");
+}
+
 .main-color {
   background-color: #dcd7c9;
 }
