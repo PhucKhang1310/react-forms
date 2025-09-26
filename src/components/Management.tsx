@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import Drawer from "./Drawer";
 import NavBar from "./NavBar";
 import Popup from "./Popup";
-import Table from "./Table";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import PopupForm from "./PopupForm";
 import type { EditFormData, RegisterFormData } from "../app/types";
@@ -108,7 +107,7 @@ const Management = () => {
 
   useEffect(() => {
     if (!currentUser) {
-      navigate("/");
+      // navigate("/");
     }
   }, [currentUser]);
 
