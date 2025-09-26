@@ -4,6 +4,8 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Error from "./components/Error";
+import ItemManagement from "./components/ItemManagement";
+import ItemTable from "./components/ItemTable";
 
 const App = () => {
   return (
@@ -11,9 +13,11 @@ const App = () => {
       <Routes>
         <Route path="/" element={<ProtectedRoute />}>
           <Route path="management" element={<Management />} />
+          <Route path="items" element={<ItemManagement />} />
         </Route>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/test" element={<ItemTable />} />
         <Route path="*" element={<Error />} />
       </Routes>
     </BrowserRouter>

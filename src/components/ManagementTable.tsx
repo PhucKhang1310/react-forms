@@ -14,7 +14,7 @@ import Highlighter from "react-highlight-words";
 import { SearchOutlined } from "@ant-design/icons";
 import TableAction from "./TableAction";
 
-interface AntTableProps {
+interface ManagementTableProps {
   data: AccountOptions[];
   onToggle?: (record: AccountOptions) => void;
   onEdit?: (record: AccountOptions) => void;
@@ -22,7 +22,13 @@ interface AntTableProps {
   onView?: (record: AccountOptions) => void;
 }
 
-const AntTable = ({ data, onToggle, onDelete, onEdit, onView }: AntTableProps) => {
+const ManagementTable = ({
+  data,
+  onToggle,
+  onDelete,
+  onEdit,
+  onView,
+}: ManagementTableProps) => {
   const [searchText, setSearchText] = useState("");
   const [searchColumn, setSearchColumn] = useState("");
   const searchInput = useRef<InputRef>(null);
@@ -199,4 +205,4 @@ const AntTable = ({ data, onToggle, onDelete, onEdit, onView }: AntTableProps) =
     </div>
   );
 };
-export default AntTable;
+export default ManagementTable;

@@ -3,35 +3,29 @@ import Drawer from "./Drawer";
 import NavBar from "./NavBar";
 import Popup from "./Popup";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import PopupForm from "./PopupForm";
 import type { EditFormData, RegisterFormData } from "../app/types";
 import ManagementButton from "./ManagementButton";
-import type { AccountOptions } from "../app/accountSlice";
 import PopupRegister from "./PopupRegister";
 import { useNavigate } from "react-router-dom";
-import ManagementTable from "./ManagementTable";
+import ItemTable from "./ItemTable";
+import type { ItemOptions } from "../app/itemSlice";
 
 type PopupType = "delete" | "status" | null;
 
-const Management = () => {
+const ItemManagement = () => {
   const [drawerOpen, setDrawerOpen] = useState(true);
   const [popupVisible, setPopupVisible] = useState(false);
   const [creatingAccount, setCreatingAccount] = useState(false);
   const [editingAccount, setEditingAccount] = useState(false);
   const [viewingAccount, setViewingAccount] = useState(false);
   const [popupType, setPopupType] = useState<PopupType>(null);
-  const [pendingItem, setPendingItem] = useState<AccountOptions | null>(null);
+  const [pendingItem, setPendingItem] = useState<ItemOptions | null>(null);
 
-  const TableData = useAppSelector((state) => state.account.accounts);
+  const TableData = useAppSelector((state) => state.item.items);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const currentUser = useAppSelector((state) => state.account.currentAccount);
-  const currentEmails = useAppSelector((state) =>
-    state.account.accounts
-      .map((acc) => acc.email)
-      .filter((email) => email !== pendingItem?.email),
-  );
 
   const logout = () => {
     navigate("/");
@@ -55,8 +49,7 @@ const Management = () => {
   };
 
   const onConfirm = () => {
-    if (popupType === "delete") deleteAccount();
-    else if (popupType === "status") updateStatus();
+    if (popupType === "delete") deleteItem();
     closePopup();
   };
 
@@ -68,10 +61,10 @@ const Management = () => {
     });
   };
 
-  const deleteAccount = () => {
+  const deleteItem = () => {
     if (!pendingItem) return;
     dispatch({
-      type: "account/deleteAccount",
+      type: "item/deleteItem",
       payload: { id: pendingItem.id },
     });
   };
@@ -94,17 +87,6 @@ const Management = () => {
     setCreatingAccount(true);
   };
 
-  const showEditForm = (account: AccountOptions) => {
-    setViewingAccount(true);
-    setEditingAccount(true);
-    setPendingItem(account);
-  };
-
-  const viewAccountForm = (account: AccountOptions) => {
-    setPendingItem(account);
-    setViewingAccount(true);
-  };
-
   const onEdit = (e?: MouseEvent<HTMLButtonElement>) => {
     e?.preventDefault();
     setEditingAccount(true);
@@ -117,29 +99,11 @@ const Management = () => {
   };
 
   const deleteMessage = `Xóa tài khoản ${pendingItem?.name}?`;
-  const statusAction = `${pendingItem?.status ? "Hủy kích hoạt" : "Kích hoạt"}`;
+  const statusAction = `${pendingItem ? "Hủy kích hoạt" : "Kích hoạt"}`;
   const statusMessage = `${statusAction} tài khoản ${pendingItem?.name}?`;
 
   return (
     <div className="bg-white">
-      {creatingAccount && (
-        <PopupRegister
-          title="Tạo tài khoản"
-          onCancel={closeForms}
-          onSubmit={createAccount}
-        />
-      )}
-      {viewingAccount && pendingItem && (
-        <PopupForm
-          account={pendingItem}
-          title="Chỉnh sửa tài khoản"
-          onCancel={closeForms}
-          onSubmit={editAccount}
-          currentEmails={currentEmails}
-          isEditing={editingAccount}
-          onEdit={onEdit}
-        />
-      )}
       {popupVisible && (
         <Popup
           message={popupType === "status" ? statusMessage : deleteMessage}
@@ -159,16 +123,13 @@ const Management = () => {
               <ManagementButton label="Logout" variant="red" onClick={logout} />
             </div>
           </div>
-          <ManagementTable
+          <ItemTable
             data={TableData}
-            onToggle={(record) => openPopup("status", record)}
-            onEdit={(record) => showEditForm(record)}
             onDelete={(record) => openPopup("delete", record)}
-            onView={(record) => viewAccountForm(record)}
           />
         </div>
       </div>
     </div>
   );
 };
-export default Management;
+export default ItemManagement;
