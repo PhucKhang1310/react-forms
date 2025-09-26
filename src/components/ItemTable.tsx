@@ -14,6 +14,7 @@ import type { FilterDropdownProps } from "antd/es/table/interface";
 import { useRef, useState } from "react";
 import { SearchOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
+import "../styles/antTable.css";
 
 interface ItemTableProps {
   data: ItemOptions[];

@@ -1,15 +1,23 @@
-
 thead.ant-table-thead > tr > th {
   background-color: #dcd7c9 !important;
 }
 
 .ant-table-cell {
-  border: thin solid #646464!important;
-  @apply w-1/5
+  border: thin solid #646464 !important;
+  @apply w-1/5;
 }
 
-th.ant-table-cell {
-    border-radius: 0 !important;
+.ant-table-thead > tr > th {
+  border-start-start-radius: 0 !important;
+  border-start-end-radius: 0 !important;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
 }
 
+.ant-table-header {
+  border-radius: 0 !important;
+}
 
+th::before {
+  display: none !important;
+}
