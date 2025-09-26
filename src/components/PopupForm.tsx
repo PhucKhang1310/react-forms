@@ -1,3 +1,4 @@
+import type { MouseEvent } from "react";
 import type { AccountOptions } from "../app/accountSlice";
 import type { EditFormData } from "../app/types";
 import EditForm from "./EditForm";
@@ -7,7 +8,7 @@ interface PopupFormProps {
   account: AccountOptions
   onCancel?: () => void;
   onSubmit: (data: EditFormData) => void;
-  onEdit?: () => void;
+  onEdit?: (e?: MouseEvent<HTMLButtonElement>) => void;
   currentEmails: string[];
   isEditing?: boolean;
 }

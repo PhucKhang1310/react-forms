@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { EditSchema, type EditFormData } from "../app/types";
 import FormInput from "./FormInput";
 import FormButton from "./FormButton";
+import type { MouseEvent } from "react";
 
 interface EditFormProps {
   defaultValues: { name: string; email: string; password: string };
@@ -11,7 +12,7 @@ interface EditFormProps {
   isEditing?: boolean;
   onCancel?: () => void;
   onSubmit: (data: EditFormData) => void;
-  onEdit?: () => void;
+  onEdit?: (e?: MouseEvent<HTMLButtonElement>) => void;
   currentEmails: string[];
 }
 

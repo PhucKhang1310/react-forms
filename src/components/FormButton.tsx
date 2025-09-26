@@ -1,8 +1,10 @@
+import type { MouseEvent } from "react";
+
 interface FormButtonProps {
   label: string;
   type?: "button" | "submit";
   variant?: "bordered" | "filled";
-  onClick?: () => void;
+  onClick?: (e? : MouseEvent<HTMLButtonElement>) => void;
 }
 
 const FormButton = ({

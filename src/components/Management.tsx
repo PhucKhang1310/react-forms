@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, type MouseEvent } from "react";
 import Drawer from "./Drawer";
 import NavBar from "./NavBar";
 import Popup from "./Popup";
@@ -21,7 +21,7 @@ const Management = () => {
   const [viewingAccount, setViewingAccount] = useState(false);
   const [popupType, setPopupType] = useState<PopupType>(null);
   const [pendingItem, setPendingItem] = useState<AccountOptions | null>(null);
-  
+
   const TableData = useAppSelector((state) => state.account.accounts);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -103,11 +103,12 @@ const Management = () => {
   const viewAccountForm = (account: AccountOptions) => {
     setPendingItem(account);
     setViewingAccount(true);
-  }
+  };
 
-  const onEdit = () => {
+  const onEdit = (e?: MouseEvent<HTMLButtonElement>) => {
+    e?.preventDefault();
     setEditingAccount(true);
-  }
+  };
 
   const closeForms = () => {
     setViewingAccount(false);
@@ -119,12 +120,6 @@ const Management = () => {
   const statusAction = `${pendingItem?.status ? "Hủy kích hoạt" : "Kích hoạt"}`;
   const statusMessage = `${statusAction} tài khoản ${pendingItem?.name}?`;
 
-  useEffect(() => {
-    if (!currentUser) {
-      // navigate("/");
-    }
-  }, [currentUser]);
-
   return (
     <div className="bg-white">
       {creatingAccount && (
@@ -134,7 +129,7 @@ const Management = () => {
           onSubmit={createAccount}
         />
       )}
-      {viewingAccount && pendingItem &&(
+      {viewingAccount && pendingItem && (
         <PopupForm
           account={pendingItem}
           title="Chỉnh sửa tài khoản"
@@ -164,12 +159,6 @@ const Management = () => {
               <ManagementButton label="Logout" variant="red" onClick={logout} />
             </div>
           </div>
-          {/* <Table
-            items={TableData}
-            onToggle={(item) => openPopup("status", item)}
-            onDelete={(item) => openPopup("delete", item)}
-            onEdit={(item) => showEditForm(item)}
-          /> */}
           <AntTable
             data={TableData}
             onToggle={(record) => openPopup("status", record)}
