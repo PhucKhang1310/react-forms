@@ -6,8 +6,12 @@ import FormButton from "./FormButton";
 
 interface EditFormProps {
   defaultValues: { name: string; email: string; password: string };
+  dateModified?: string;
+  status?: boolean;
+  isEditing?: boolean;
   onCancel?: () => void;
   onSubmit: (data: EditFormData) => void;
+  onEdit?: () => void;
   currentEmails: string[];
 }
 
@@ -15,7 +19,11 @@ const EditForm = ({
   defaultValues = { name: "", email: "", password: "" },
   onCancel,
   onSubmit,
+  onEdit,
   currentEmails,
+  isEditing,
+  dateModified,
+  status,
 }: EditFormProps) => {
   const editSchema = EditSchema(currentEmails);
   const {
@@ -37,6 +45,7 @@ const EditForm = ({
         register={register}
         error={errors.name}
         defaultValue={defaultValues.name}
+        readOnly={!isEditing}
       />
       <FormInput<EditFormData>
         type="email"
@@ -46,6 +55,7 @@ const EditForm = ({
         register={register}
         error={errors.email}
         defaultValue={defaultValues.email}
+        readOnly={!isEditing}
       />
       <FormInput<EditFormData>
         type="text"
@@ -57,14 +67,35 @@ const EditForm = ({
         defaultValue={defaultValues.password}
         readOnly
       />
-      <FormInput<EditFormData>
-        type="password"
-        label="New Password"
-        name="newPassword"
-        placeholder="********"
-        register={register}
-        error={errors.newPassword}
-      />
+      {isEditing && (
+        <FormInput<EditFormData>
+          type="password"
+          label="New Password"
+          name="newPassword"
+          placeholder="********"
+          register={register}
+          error={errors.newPassword}
+        />
+      )}
+      {!isEditing && (
+        <>
+          <FormInput
+            type="text"
+            label="Date Modified"
+            placeholder="dd/mm/yyyy"
+            defaultValue={dateModified}
+            readOnly
+          />
+          <div className="flex gap-4 self-start">
+            <input
+              type="checkbox"
+              checked={status}
+              className="check-icon mt-0.75 rounded border border-gray-400 bg-gray-300 bg-none bg-cover bg-no-repeat ring-0 checked:bg-white"
+            />
+            {status ? "Đã kích hoạt" : "Chưa kích hoạt"}
+          </div>
+        </>
+      )}
       <div className="flex w-full justify-around">
         <FormButton
           label="Đóng"
@@ -72,7 +103,11 @@ const EditForm = ({
           onClick={onCancel}
           variant="bordered"
         />
-        <FormButton label="Lưu" />
+        {isEditing ? (
+          <FormButton label="Lưu" />
+        ) : (
+          <FormButton label="Sửa" type="button" onClick={onEdit} />
+        )}
       </div>
     </form>
   );

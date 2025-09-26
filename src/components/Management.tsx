@@ -18,10 +18,10 @@ const Management = () => {
   const [popupVisible, setPopupVisible] = useState(false);
   const [creatingAccount, setCreatingAccount] = useState(false);
   const [editingAccount, setEditingAccount] = useState(false);
-
+  const [viewingAccount, setViewingAccount] = useState(false);
   const [popupType, setPopupType] = useState<PopupType>(null);
-  const [pendingItem, setPendingItem] = useState<any>(null);
-
+  const [pendingItem, setPendingItem] = useState<AccountOptions | null>(null);
+  
   const TableData = useAppSelector((state) => state.account.accounts);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -61,6 +61,7 @@ const Management = () => {
   };
 
   const updateStatus = () => {
+    if (!pendingItem) return;
     dispatch({
       type: "account/toggleAccountStatus",
       payload: { id: pendingItem.id },
@@ -68,6 +69,7 @@ const Management = () => {
   };
 
   const deleteAccount = () => {
+    if (!pendingItem) return;
     dispatch({
       type: "account/deleteAccount",
       payload: { id: pendingItem.id },
@@ -75,6 +77,7 @@ const Management = () => {
   };
 
   const editAccount = (data: EditFormData) => {
+    if (!pendingItem) return;
     dispatch({
       type: "account/editAccount",
       payload: { id: pendingItem.id, data: data },
@@ -92,11 +95,22 @@ const Management = () => {
   };
 
   const showEditForm = (account: AccountOptions) => {
+    setViewingAccount(true);
     setEditingAccount(true);
     setPendingItem(account);
   };
 
+  const viewAccountForm = (account: AccountOptions) => {
+    setPendingItem(account);
+    setViewingAccount(true);
+  }
+
+  const onEdit = () => {
+    setEditingAccount(true);
+  }
+
   const closeForms = () => {
+    setViewingAccount(false);
     setCreatingAccount(false);
     setEditingAccount(false);
   };
@@ -120,13 +134,15 @@ const Management = () => {
           onSubmit={createAccount}
         />
       )}
-      {editingAccount && (
+      {viewingAccount && pendingItem &&(
         <PopupForm
-          defaultValues={pendingItem}
+          account={pendingItem}
           title="Chỉnh sửa tài khoản"
           onCancel={closeForms}
           onSubmit={editAccount}
           currentEmails={currentEmails}
+          isEditing={editingAccount}
+          onEdit={onEdit}
         />
       )}
       {popupVisible && (
@@ -159,6 +175,7 @@ const Management = () => {
             onToggle={(record) => openPopup("status", record)}
             onEdit={(record) => showEditForm(record)}
             onDelete={(record) => openPopup("delete", record)}
+            onView={(record) => viewAccountForm(record)}
           />
         </div>
       </div>

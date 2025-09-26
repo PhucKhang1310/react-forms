@@ -19,9 +19,10 @@ interface AntTableProps {
   onToggle?: (record: AccountOptions) => void;
   onEdit?: (record: AccountOptions) => void;
   onDelete?: (record: AccountOptions) => void;
+  onView?: (record: AccountOptions) => void;
 }
 
-const AntTable = ({ data, onToggle, onDelete, onEdit }: AntTableProps) => {
+const AntTable = ({ data, onToggle, onDelete, onEdit, onView }: AntTableProps) => {
   const [searchText, setSearchText] = useState("");
   const [searchColumn, setSearchColumn] = useState("");
   const searchInput = useRef<InputRef>(null);
@@ -185,7 +186,7 @@ const AntTable = ({ data, onToggle, onDelete, onEdit }: AntTableProps) => {
               />
               <TableAction
                 className="article-icon"
-                // onClick={() => onView?.(record)}
+                onClick={() => onView?.(record)}
               />
               <TableAction
                 className="delete-icon"

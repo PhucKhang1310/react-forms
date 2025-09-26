@@ -4,9 +4,9 @@ interface FormFieldProps<T extends FieldValues> {
   label: string;
   type: string;
   placeholder: string;
-  name: keyof T;
-  register: UseFormRegister<T>;
-  error: FieldError | undefined;
+  name?: keyof T;
+  register?: UseFormRegister<T>;
+  error?: FieldError | undefined;
   defaultValue?: string;
   readOnly?: boolean;
 }
@@ -28,7 +28,7 @@ const FormInput = <T extends FieldValues>({
         className={`h-8 w-full rounded-md border border-[#DCD7C9] shadow-md placeholder:opacity-30 focus:outline-none active:outline-none ${readOnly ? "active: cursor-default bg-gray-100 text-gray-500 focus:ring-0" : "focus:ring-1 focus:ring-[#DCD7C9]"}`}
         type={type}
         placeholder={placeholder}
-        {...register(name as any)}
+        {...register?.(name as any)}
         defaultValue={defaultValue}
         readOnly={readOnly}
       />
