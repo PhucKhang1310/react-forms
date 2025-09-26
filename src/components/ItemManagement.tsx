@@ -1,11 +1,9 @@
-import { useState, type MouseEvent } from "react";
+import { useState } from "react";
 import Drawer from "./Drawer";
 import NavBar from "./NavBar";
 import Popup from "./Popup";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import type { EditFormData, RegisterFormData } from "../app/types";
 import ManagementButton from "./ManagementButton";
-import PopupRegister from "./PopupRegister";
 import { useNavigate } from "react-router-dom";
 import ItemTable from "./ItemTable";
 import type { ItemOptions } from "../app/itemSlice";
@@ -15,9 +13,6 @@ type PopupType = "delete" | "status" | null;
 const ItemManagement = () => {
   const [drawerOpen, setDrawerOpen] = useState(true);
   const [popupVisible, setPopupVisible] = useState(false);
-  const [creatingAccount, setCreatingAccount] = useState(false);
-  const [editingAccount, setEditingAccount] = useState(false);
-  const [viewingAccount, setViewingAccount] = useState(false);
   const [popupType, setPopupType] = useState<PopupType>(null);
   const [pendingItem, setPendingItem] = useState<ItemOptions | null>(null);
 
@@ -53,49 +48,12 @@ const ItemManagement = () => {
     closePopup();
   };
 
-  const updateStatus = () => {
-    if (!pendingItem) return;
-    dispatch({
-      type: "account/toggleAccountStatus",
-      payload: { id: pendingItem.id },
-    });
-  };
-
   const deleteItem = () => {
     if (!pendingItem) return;
     dispatch({
       type: "item/deleteItem",
       payload: { id: pendingItem.id },
     });
-  };
-
-  const editAccount = (data: EditFormData) => {
-    if (!pendingItem) return;
-    dispatch({
-      type: "account/editAccount",
-      payload: { id: pendingItem.id, data: data },
-    });
-    closeForms();
-  };
-
-  const createAccount = (data: RegisterFormData) => {
-    dispatch({ type: "account/addAccount", payload: data });
-    closeForms();
-  };
-
-  const showAccountForm = () => {
-    setCreatingAccount(true);
-  };
-
-  const onEdit = (e?: MouseEvent<HTMLButtonElement>) => {
-    e?.preventDefault();
-    setEditingAccount(true);
-  };
-
-  const closeForms = () => {
-    setViewingAccount(false);
-    setCreatingAccount(false);
-    setEditingAccount(false);
   };
 
   const deleteMessage = `Xóa tài khoản ${pendingItem?.name}?`;
@@ -119,7 +77,7 @@ const ItemManagement = () => {
           <div className="flex justify-between pb-3">
             <h2 className="text-lg font-bold">Danh sách</h2>
             <div className="flex gap-5">
-              <ManagementButton label="Thêm" onClick={showAccountForm} />
+              <ManagementButton label="Thêm" onClick={() => {}} />
               <ManagementButton label="Logout" variant="red" onClick={logout} />
             </div>
           </div>
