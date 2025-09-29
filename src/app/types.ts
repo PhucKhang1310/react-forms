@@ -81,3 +81,10 @@ export type ItemFields = {
   stock: number;
   tags: string[];
 }
+
+export type RegisterFields = {
+  name: string;
+  email: string;
+  password: string;
+  passwordCfm: string;
+}

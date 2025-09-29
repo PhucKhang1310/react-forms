@@ -6,6 +6,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Error from "./components/Error";
 import ItemManagement from "./components/ItemManagement";
 import ItemForm from "./components/ItemForm";
+import RegisterAntForm from "./components/RegisterAntForm";
 
 const App = () => {
   return (
@@ -17,7 +18,7 @@ const App = () => {
         </Route>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/test" element={<ItemForm />} />
+        <Route path="/test" element={<RegisterAntForm />} />
         <Route path="*" element={<Error />} />
       </Routes>
     </BrowserRouter>
