@@ -1,3 +1,5 @@
+import PopupOverlay from "./PopupOverlay";
+
 interface PopupProps {
   message?: string;
   confirmText?: string;
@@ -14,7 +16,7 @@ const Popup = ({
   cancelText = "Đóng",
 }: PopupProps) => {
   return (
-    <div className="absolute top-0 left-0 z-10 flex h-screen w-screen items-center justify-center bg-[rgba(0,0,0,0.5)]">
+    <PopupOverlay>
       <div className="flex h-52 w-xl flex-col justify-center rounded-md bg-white">
         <div className="flex items-center justify-center p-10">
           <h3>{message}</h3>
@@ -34,7 +36,7 @@ const Popup = ({
           </button>
         </div>
       </div>
-    </div>
+    </PopupOverlay>
   );
 };
 export default Popup;

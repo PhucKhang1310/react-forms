@@ -1,6 +1,5 @@
 @layer theme, base, antd, components, utilities;
 @import "tailwindcss";
-@plugin "@tailwindcss/forms";
 
 body {
   padding: 0px;

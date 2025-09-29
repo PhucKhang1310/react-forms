@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, nanoid } from "@reduxjs/toolkit";
 
 export interface ItemOptions {
   id: string;
@@ -156,10 +156,32 @@ const ItemSlice = createSlice({
   reducers: {
     deleteItem: (state, action) => {
       state.items = state.items.filter((item) => item.id !== action.payload.id);
+    },
+    addItem: (state, action) => {
+      const { name, price, stock, tags } = action.payload;
+      const newItem: ItemOptions = {
+        id: nanoid(),
+        name,
+        sku: "SKU" + "-" + Math.floor(10000 + Math.random() * 90000),
+        price,
+        stock,
+        tags,
+      };
+      state.items.push(newItem);
+    },
+    editItem: (state, action) => {
+      const { id, name, price, stock, tags } = action.payload;
+      const item = state.items.find((item) => item.id === id);  
+      if (item) {
+        item.name = name;
+        item.price = price;
+        item.stock = stock;
+        item.tags = tags;
+      }
     }
   },
 });
 
-export const { deleteItem } = ItemSlice.actions;
+export const { deleteItem, addItem, editItem } = ItemSlice.actions;
 
 export default ItemSlice.reducer;

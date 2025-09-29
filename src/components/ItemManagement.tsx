@@ -7,13 +7,18 @@ import ManagementButton from "./ManagementButton";
 import { useNavigate } from "react-router-dom";
 import ItemTable from "./ItemTable";
 import type { ItemOptions } from "../app/itemSlice";
+import PopupItemForm from "./PopupItemForm";
+import type { ItemFields } from "../app/types";
 
 type PopupType = "delete" | "status" | null;
+type FormType = "create" | "edit";
 
 const ItemManagement = () => {
   const [drawerOpen, setDrawerOpen] = useState(true);
   const [popupVisible, setPopupVisible] = useState(false);
+  const [editPopupVisible, setEditPopupVisible] = useState(false);
   const [popupType, setPopupType] = useState<PopupType>(null);
+  const [formType, setFormType] = useState<FormType>("create");
   const [pendingItem, setPendingItem] = useState<ItemOptions | null>(null);
 
   const TableData = useAppSelector((state) => state.item.items);
@@ -38,6 +43,7 @@ const ItemManagement = () => {
   };
 
   const closePopup = () => {
+    setEditPopupVisible(false);
     setPopupVisible(false);
     setPendingItem(null);
     setPopupType(null);
@@ -56,18 +62,53 @@ const ItemManagement = () => {
     });
   };
 
-  const deleteMessage = `Xóa tài khoản ${pendingItem?.name}?`;
-  const statusAction = `${pendingItem ? "Hủy kích hoạt" : "Kích hoạt"}`;
-  const statusMessage = `${statusAction} tài khoản ${pendingItem?.name}?`;
+  const onEdit = (item: ItemOptions) => {
+    setPendingItem(item);
+    setEditPopupVisible(true);
+    setFormType("edit");
+  };
+
+  const onCreate = () => {
+    setEditPopupVisible(true);
+    setPendingItem(null);
+    setFormType("create");
+  };
+
+  const onSubmit = (data: ItemFields) => {
+    console.log("Submitted data:", data);
+    if (formType === "edit" && pendingItem) {
+      dispatch({
+        type: "item/editItem",
+        payload: { id: pendingItem.id, ...data },
+      });
+    } else if (formType === "create") {
+      dispatch({
+        type: "item/addItem",
+        payload: data,
+      });
+    }
+    setEditPopupVisible(false);
+  };
+
+  const deleteMessage = `Xóa sản phẩm ${pendingItem?.name}?`;
+  const buttonLabel = formType === "create" ? "Thêm sản phẩm" : "Lưu thay đổi";
 
   return (
     <div className="bg-white">
       {popupVisible && (
         <Popup
-          message={popupType === "status" ? statusMessage : deleteMessage}
-          confirmText={popupType === "status" ? statusAction : "Xóa"}
+          message={popupType === "status" ? "" : deleteMessage}
+          confirmText={popupType === "status" ? "" : "Xóa"}
           onConfirm={onConfirm}
           onCancel={closePopup}
+        />
+      )}
+      {editPopupVisible && (
+        <PopupItemForm
+          onSubmit={onSubmit}
+          initialValues={pendingItem as ItemFields}
+          onClose={closePopup}
+          label={buttonLabel}
         />
       )}
       <NavBar username={currentUser?.name} onToggleDrawer={toggleDrawer} />
@@ -77,13 +118,14 @@ const ItemManagement = () => {
           <div className="flex justify-between pb-3">
             <h2 className="text-lg font-bold">Danh sách</h2>
             <div className="flex gap-5">
-              <ManagementButton label="Thêm" onClick={() => {}} />
+              <ManagementButton label="Thêm" onClick={onCreate} />
               <ManagementButton label="Logout" variant="red" onClick={logout} />
             </div>
           </div>
           <ItemTable
             data={TableData}
             onDelete={(record) => openPopup("delete", record)}
+            onEdit={(record) => onEdit(record)}
           />
         </div>
       </div>

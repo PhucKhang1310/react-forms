@@ -1,5 +1,4 @@
 import { z, type ZodType } from "zod";
-import type { ItemTag } from "./itemSlice";
 
 const passwordSchema = z
   .string()
@@ -76,31 +75,9 @@ export const EditSchema = (currentEmails: string[]) => {
     });
 };
 
-export type ItemAddFormData = {
+export type ItemFields = {
   name: string;
-  sku: string;
   price: number;
-  quantity: number;
-  tags: ItemTag[];
-};
-
-const itemNameSchema= z.string().min(1, "Tên mặt hàng không được để trống");
-
-const skuSchema = z
-  .string()
-  .startsWith("SKU-", "SKU phải bắt đầu với 'SKU-'")
-  .regex(/^SKU-\d+$/, "SKU phải theo định dạng 'SKU-12345'");
-
-const priceSchema = z.number().gte(1000, "Giá phải bắt đầu từ 1000đ").multipleOf(1000, "Giá phải chia hết cho 1000đ").positive("Giá phải là số dương");
-
-const quantitySchema = z.number().int("Số lượng phải là số nguyên").min(1, "Số lượng phải lớn hơn 0").max(1000, "Số lượng không được vượt quá 1000");
-
-const tagsSchema = z.array(z.enum(["Đồ uống", "Tạp hóa", "Đông lạnh", "Đồ ăn vặt", "Kẹo"])).min(1, "Phải chọn ít nhất một thẻ");
-
-export const ItemAddSchema: ZodType<ItemAddFormData> = z.object({
-  name: itemNameSchema,
-  sku: skuSchema,
-  price: priceSchema,
-  quantity: quantitySchema,
-  tags: tagsSchema,
-});
+  stock: number;
+  tags: string[];
+}
