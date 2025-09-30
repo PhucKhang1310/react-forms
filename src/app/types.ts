@@ -95,3 +95,8 @@ export type EditFields = {
   password: string;
   newPassword: string;
 };
+
+export type LoginFields = {
+  name: string;
+  password: string;
+}

@@ -9,6 +9,7 @@ import ItemTable from "./ItemTable";
 import type { ItemOptions } from "../app/itemSlice";
 import PopupItemForm from "./PopupItemForm";
 import type { ItemFields } from "../app/types";
+import ItemForm from "./ItemForm";
 
 type PopupType = "delete" | "status" | null;
 type FormType = "create" | "edit";
@@ -92,6 +93,7 @@ const ItemManagement = () => {
 
   const deleteMessage = `Xóa sản phẩm ${pendingItem?.name}?`;
   const buttonLabel = formType === "create" ? "Thêm sản phẩm" : "Lưu thay đổi";
+  const formTitle = formType === "create" ? "Thêm sản phẩm" : "Chỉnh sửa sản phẩm";
 
   return (
     <div className="bg-white">
@@ -104,11 +106,12 @@ const ItemManagement = () => {
         />
       )}
       {editPopupVisible && (
-        <PopupItemForm
+        <ItemForm
           onSubmit={onSubmit}
           initialValues={pendingItem as ItemFields}
           onClose={closePopup}
           label={buttonLabel}
+          title={formTitle}
         />
       )}
       <NavBar username={currentUser?.name} onToggleDrawer={toggleDrawer} />

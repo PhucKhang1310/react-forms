@@ -5,10 +5,10 @@ import Register from "./components/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Error from "./components/Error";
 import ItemManagement from "./components/ItemManagement";
-import ItemForm from "./components/ItemForm";
-import RegisterAntForm from "./components/RegisterAntForm";
+import Popup from "./components/Popup";
 
 const App = () => {
+
   return (
     <BrowserRouter>
       <Routes>
@@ -18,7 +18,7 @@ const App = () => {
         </Route>
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/test" element={<RegisterAntForm />} />
+        <Route path="/test" element={<Popup />} />
         <Route path="*" element={<Error />} />
       </Routes>
     </BrowserRouter>

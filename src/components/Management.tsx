@@ -3,13 +3,13 @@ import Drawer from "./Drawer";
 import NavBar from "./NavBar";
 import Popup from "./Popup";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import PopupForm from "./PopupForm";
-import type { EditFormData, RegisterFormData } from "../app/types";
+import type { EditFormData, RegisterFields } from "../app/types";
 import ManagementButton from "./ManagementButton";
 import type { AccountOptions } from "../app/accountSlice";
 import PopupRegister from "./PopupRegister";
 import { useNavigate } from "react-router-dom";
 import ManagementTable from "./ManagementTable";
+import EditAntForm from "./EditAntForm";
 
 type PopupType = "delete" | "status" | null;
 
@@ -85,7 +85,7 @@ const Management = () => {
     closeForms();
   };
 
-  const createAccount = (data: RegisterFormData) => {
+  const createAccount = (data: RegisterFields) => {
     dispatch({ type: "account/addAccount", payload: data });
     closeForms();
   };
@@ -122,22 +122,12 @@ const Management = () => {
 
   return (
     <div className="bg-white">
-      {creatingAccount && (
-        <PopupRegister
-          title="Tạo tài khoản"
-          onCancel={closeForms}
-          onSubmit={createAccount}
-        />
-      )}
+      {creatingAccount && <PopupRegister onCancel={closeForms} onSubmit={createAccount}/>}
       {viewingAccount && pendingItem && (
-        <PopupForm
-          account={pendingItem}
-          title="Chỉnh sửa tài khoản"
-          onCancel={closeForms}
+        <EditAntForm
+          defaultValues={{ ...pendingItem, newPassword: "" }}
           onSubmit={editAccount}
-          currentEmails={currentEmails}
-          isEditing={editingAccount}
-          onEdit={onEdit}
+          onCancel={closeForms}
         />
       )}
       {popupVisible && (

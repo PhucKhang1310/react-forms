@@ -2,12 +2,23 @@ import { Button, Form, Input } from "antd";
 import type { RegisterFields } from "../app/types";
 import { useAppSelector } from "../app/hooks";
 
-const RegisterAntForm = () => {
+interface RegisterAntFormProps {
+  onSubmit?: (data: RegisterFields) => void;
+  onCancel?: () => void;
+}
+
+const RegisterAntForm = ({onCancel, onSubmit}: RegisterAntFormProps) => {
   const accounts = useAppSelector((state) => state.account.accounts).map(
     (account) => account.email,
   );
+
   return (
-    <Form className="w-90" layout="vertical" requiredMark={false}>
+    <Form
+      className="w-90"
+      layout="vertical"
+      requiredMark={false}
+      onFinish={onSubmit}
+    >
       <Form.Item<RegisterFields>
         name="name"
         label="Tên tài khoản"
@@ -81,7 +92,7 @@ const RegisterAntForm = () => {
         <Button type="primary" htmlType="submit">
           Đăng ký
         </Button>
-        <Button type="default" htmlType="button">
+        <Button type="default" htmlType="button" onClick={onCancel}>
           Hủy
         </Button>
       </div>

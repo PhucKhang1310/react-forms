@@ -1,12 +1,14 @@
 import { Button, Form, Input, Select, Tag, type SelectProps } from "antd";
 import type { ItemFields } from "../app/types";
 import { ITEM_TAGS, type ItemTag } from "../app/itemSlice";
+import PopupOverlay from "./PopupOverlay";
 
 interface ItemFormProps {
   onSubmit: (values: ItemFields) => void;
   initialValues?: ItemFields;
   onClose: () => void;
   label?: string;
+  title: string;
 }
 
 const tagColorMap: Record<ItemTag, string> = {
@@ -38,62 +40,64 @@ const tagRender: SelectProps["tagRender"] = (props) => {
   );
 };
 
-const ItemForm = ({ onSubmit, initialValues, onClose, label }: ItemFormProps) => {
+const ItemForm = ({ onSubmit, initialValues, onClose, label, title }: ItemFormProps) => {
   return (
-    <Form
-      className="w-90 "
-      layout="vertical"
-      requiredMark={false}
-      onFinish={onSubmit}
-      initialValues={initialValues}
-    >
-      <Form.Item<ItemFields>
-        name="name"
-        label="Tên sản phẩm"
-        rules={[{ required: true, message: "Sản phẩm chưa có tên" }]}
+    <PopupOverlay title={title}>
+      <Form
+        className="w-90 "
+        layout="vertical"
+        requiredMark={false}
+        onFinish={onSubmit}
+        initialValues={initialValues}
       >
-        <Input />
-      </Form.Item>
-      <Form.Item<ItemFields>
-        name="price"
-        label="Giá"
-        rules={[
-          { required: true, message: "Sản phẩm chưa có giá" },
-          { pattern: /^\d*[0]{3}/, message: "Giá phải là bội của 1000" },
-        ]}
-      >
-        <Input type="number" />
-      </Form.Item>
-      <Form.Item<ItemFields>
-        name="stock"
-        label="Số lượng"
-        rules={[{ required: true, message: "Sản phẩm phải có số lượng" }]}
-      >
-        <Input type="number" />
-      </Form.Item>
-      <Form.Item<ItemFields>
-        name="tags"
-        label="Thẻ"
-        rules={[
-          { required: true, message: "Sản phẩm phải có ít nhất một thẻ" },
-        ]}
-      >
-        <Select
-          mode="multiple"
-          maxCount={3}
-          options={options}
-          tagRender={tagRender}
-        />
-      </Form.Item>
-      <div className="w-full flex justify-evenly">
-        <Button type="primary" htmlType="submit">
-          {label}
-        </Button>
-        <Button type="default" htmlType="button" onClick={onClose}>
-          Hủy
-        </Button>
-      </div>
-    </Form>
+        <Form.Item<ItemFields>
+          name="name"
+          label="Tên sản phẩm"
+          rules={[{ required: true, message: "Sản phẩm chưa có tên" }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item<ItemFields>
+          name="price"
+          label="Giá"
+          rules={[
+            { required: true, message: "Sản phẩm chưa có giá" },
+            { pattern: /^\d*[0]{3}/, message: "Giá phải là bội của 1000" },
+          ]}
+        >
+          <Input type="number" />
+        </Form.Item>
+        <Form.Item<ItemFields>
+          name="stock"
+          label="Số lượng"
+          rules={[{ required: true, message: "Sản phẩm phải có số lượng" }]}
+        >
+          <Input type="number" />
+        </Form.Item>
+        <Form.Item<ItemFields>
+          name="tags"
+          label="Thẻ"
+          rules={[
+            { required: true, message: "Sản phẩm phải có ít nhất một thẻ" },
+          ]}
+        >
+          <Select
+            mode="multiple"
+            maxCount={3}
+            options={options}
+            tagRender={tagRender}
+          />
+        </Form.Item>
+        <div className="w-full flex justify-evenly">
+          <Button type="primary" htmlType="submit">
+            {label}
+          </Button>
+          <Button type="default" htmlType="button" onClick={onClose}>
+            Hủy
+          </Button>
+        </div>
+      </Form>
+    </PopupOverlay>
   );
 };
 export default ItemForm;
