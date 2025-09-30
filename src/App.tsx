@@ -8,7 +8,6 @@ import ItemManagement from "./components/ItemManagement";
 import Popup from "./components/Popup";
 
 const App = () => {
-
   return (
     <BrowserRouter>
       <Routes>

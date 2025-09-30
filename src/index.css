@@ -21,10 +21,10 @@ body {
 .edit-icon {
   background-image: url("src/assets/edit.svg");
 }
-
-input.check-icon:checked {
-  background-image: url("src/assets/check.svg");
-}
+/* 
+.check-icon {
+  background-image: url("src/assets/check.svg") !important;
+} */
 
 .cross-icon {
   background-image: url("src/assets/cross.svg");
@@ -36,4 +36,20 @@ input.check-icon:checked {
 
 .main-color {
   background-color: #dcd7c9;
+}
+
+.check-icon .ant-checkbox-checked .ant-checkbox-inner:after {
+  border-color: lime !important;
+}
+
+.check-icon .ant-checkbox-wrapper:hover .ant-checkbox-inner {
+  border-color: #d9d9d9 !important;
+}
+
+.check-icon.ant-checkbox-wrapper .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: white !important;
+}
+
+.check-icon .ant-checkbox-wrapper .ant-checkbox-inner {
+  background-color: #d9d9d9 !important;
 }

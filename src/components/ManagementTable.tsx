@@ -1,5 +1,7 @@
 import {
   Button,
+  Checkbox,
+  ConfigProvider,
   Input,
   Table,
   type InputRef,
@@ -160,6 +162,7 @@ const ManagementTable = ({
           }
           sortDirections={["ascend", "descend"]}
         />
+
         <Column
           title="Trạng thái"
           dataIndex="status"
@@ -171,16 +174,18 @@ const ManagementTable = ({
           onFilter={(value, record: AccountOptions) => record.status === value}
           render={(_, record: AccountOptions) => (
             <div className="flex gap-4">
-              <input
-                type="checkbox"
-                checked={record.status}
-                onClick={() => onToggle?.(record)}
-                className="check-icon mt-0.75 rounded border border-gray-400 bg-gray-300 bg-none bg-cover bg-no-repeat ring-0 checked:bg-white"
-              />
+              <ConfigProvider theme={{ token: { colorPrimary: "#dcd7c9" } }}>
+                <Checkbox
+                  checked={record.status}
+                  onClick={() => onToggle?.(record)}
+                  className="check-icon aspect-square w-4"
+                />
+              </ConfigProvider>
               {record.status ? "Đã kích hoạt" : "Chưa kích hoạt"}
             </div>
           )}
         />
+
         <Column
           title=""
           key="action"

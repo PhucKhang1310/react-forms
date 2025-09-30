@@ -7,7 +7,6 @@ import ManagementButton from "./ManagementButton";
 import { useNavigate } from "react-router-dom";
 import ItemTable from "./ItemTable";
 import type { ItemOptions } from "../app/itemSlice";
-import PopupItemForm from "./PopupItemForm";
 import type { ItemFields } from "../app/types";
 import ItemForm from "./ItemForm";
 

@@ -1,15 +1,16 @@
-import { useState, type MouseEvent } from "react";
+import { useState } from "react";
 import Drawer from "./Drawer";
 import NavBar from "./NavBar";
 import Popup from "./Popup";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import type { EditFormData, RegisterFields } from "../app/types";
+import type { EditFields, RegisterFields } from "../app/types";
 import ManagementButton from "./ManagementButton";
 import type { AccountOptions } from "../app/accountSlice";
 import PopupRegister from "./PopupRegister";
 import { useNavigate } from "react-router-dom";
 import ManagementTable from "./ManagementTable";
 import EditAntForm from "./EditAntForm";
+import InfoAntForm from "./InfoAntForm";
 
 type PopupType = "delete" | "status" | null;
 
@@ -25,13 +26,7 @@ const Management = () => {
   const TableData = useAppSelector((state) => state.account.accounts);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
   const currentUser = useAppSelector((state) => state.account.currentAccount);
-  const currentEmails = useAppSelector((state) =>
-    state.account.accounts
-      .map((acc) => acc.email)
-      .filter((email) => email !== pendingItem?.email),
-  );
 
   const logout = () => {
     navigate("/");
@@ -76,7 +71,7 @@ const Management = () => {
     });
   };
 
-  const editAccount = (data: EditFormData) => {
+  const editAccount = (data: EditFields) => {
     if (!pendingItem) return;
     dispatch({
       type: "account/editAccount",
@@ -95,7 +90,6 @@ const Management = () => {
   };
 
   const showEditForm = (account: AccountOptions) => {
-    setViewingAccount(true);
     setEditingAccount(true);
     setPendingItem(account);
   };
@@ -105,8 +99,8 @@ const Management = () => {
     setViewingAccount(true);
   };
 
-  const onEdit = (e?: MouseEvent<HTMLButtonElement>) => {
-    e?.preventDefault();
+  const onEdit = () => {
+    setViewingAccount(false);
     setEditingAccount(true);
   };
 
@@ -122,10 +116,15 @@ const Management = () => {
 
   return (
     <div className="bg-white">
-      {creatingAccount && <PopupRegister onCancel={closeForms} onSubmit={createAccount}/>}
+      {creatingAccount && (
+        <PopupRegister onCancel={closeForms} onSubmit={createAccount} />
+      )}
       {viewingAccount && pendingItem && (
+        <InfoAntForm defaultValues={pendingItem} onEdit={onEdit} onClose={closeForms} />
+      )}
+      {editingAccount && pendingItem && (
         <EditAntForm
-          defaultValues={{ ...pendingItem, newPassword: "" }}
+          defaultValues={{ ...pendingItem, newPassword: "", newPasswordCfm: "" }}
           onSubmit={editAccount}
           onCancel={closeForms}
         />
